@@ -58,7 +58,7 @@ class Engine {
   private function registerCallbacks() {
     $this->processor()->registerPHPFunctions(
       array(
-        '\\Thw\\Xsl\Runner\\loadXmlDocument'
+        '\\'.__NAMESPACE__.'\\loadXmlDocument'
       )
     );
   }

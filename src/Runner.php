@@ -32,9 +32,9 @@ class Runner {
   */
   public function execute() {
     $this->options()->process();
-    stream_wrapper_register('source', '\\Thw\\Xsl\Runner\\Streamwrapper\\Pathmapper');
-    stream_wrapper_register('target', '\\Thw\\Xsl\Runner\\Streamwrapper\\Pathmapper');
-    \Thw\Xsl\Runner\Streamwrapper\Pathmapper::$paths = array(
+    stream_wrapper_register('source', __NAMESPACE__.'\\Streamwrapper\\Pathmapper');
+    stream_wrapper_register('target', __NAMESPACE__.'\\Streamwrapper\\Pathmapper');
+    Streamwrapper\Pathmapper::$paths = array(
       'source' => $this->options()->getOption('xml')->value,
       'target' => $this->options()->getOption('output')->value
     );
