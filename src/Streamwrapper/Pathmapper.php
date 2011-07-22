@@ -9,7 +9,7 @@
 * @package XslRunner
 */
 
-namespace Thw\Xsl\Runner\Streamwrapper;
+namespace Carica\Xsl\Runner\Streamwrapper;
 
 /**
 * A php streamwrapper that uses base directories based on a mapping with the registered

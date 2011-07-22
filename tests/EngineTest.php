@@ -1,13 +1,13 @@
 <?php
 
-namespace Thw\Xsl\Runner;
+namespace Carica\Xsl\Runner;
 
 include_once(__DIR__.'/TestCase.php');
 
 class EngineTest extends TestCase {
 
   /**
-  * @covers \Thw\Xsl\Runner\Engine::processor
+  * @covers \Carica\Xsl\Runner\Engine::processor
   */
   public function testProcessorGetAfterSet() {
     $processor = $this->getProcessorFixture();
@@ -16,7 +16,7 @@ class EngineTest extends TestCase {
   }
 
   /**
-  * @covers \Thw\Xsl\Runner\Engine::processor
+  * @covers \Carica\Xsl\Runner\Engine::processor
   */
   public function testProcessorGetImplicitCreate() {
     $engine = new Engine();
@@ -26,8 +26,8 @@ class EngineTest extends TestCase {
   }
 
   /**
-  * @covers \Thw\Xsl\Runner\Engine::run
-  * @covers \Thw\Xsl\Runner\Engine::registerCallbacks
+  * @covers \Carica\Xsl\Runner\Engine::run
+  * @covers \Carica\Xsl\Runner\Engine::registerCallbacks
   */
   public function testRun() {
     $processor = $this->getProcessorFixture();

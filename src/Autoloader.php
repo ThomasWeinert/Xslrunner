@@ -8,7 +8,7 @@
 * @package XslRunner
 */
 
-namespace Thw\Xsl\Runner;
+namespace Carica\Xsl\Runner;
 
 /**
 * Autoloader for the Xsl\Runner

@@ -8,7 +8,7 @@
 * @package XslRunner
 */
 
-namespace Thw\Xsl\Runner;
+namespace Carica\Xsl\Runner;
 
 include_once(__DIR__.'/Autoloader.php');
 spl_autoload_register('\\'.__NAMESPACE__.'\\Autoloader::load');
@@ -37,7 +37,7 @@ class Runner {
       'source' => $this->options()->getOption('xml')->value,
       'target' => $this->options()->getOption('output')->value
     );
-    $project = new \Thw\Xsl\Runner\Project();
+    $project = new \Carica\Xsl\Runner\Project();
     $project->render($this->options()->getOption('template')->value);
   }
 

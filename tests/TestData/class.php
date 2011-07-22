@@ -1,6 +1,6 @@
 <?php
 
-namespace Thw\Xsl\Runner;
+namespace Carica\Xsl\Runner;
 
 class SampleClassForAutoloaderTest {
 

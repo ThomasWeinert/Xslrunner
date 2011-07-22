@@ -1,27 +1,27 @@
 <?php
 
-namespace Thw\Xsl\Runner;
+namespace Carica\Xsl\Runner;
 
 include_once(__DIR__.'/../src/Autoloader.php');
 
 class AutoloaderTest extends \PHPUnit_Framework_TestCase {
 
   /**
-  * @covers \Thw\Xsl\Runner\Autoloader::load
+  * @covers \Carica\Xsl\Runner\Autoloader::load
   */
   public function testLoadExpectingTrue() {
     $this->assertTrue(Autoloader_TestProxy::load(''));
   }
 
   /**
-  * @covers \Thw\Xsl\Runner\Autoloader::load
+  * @covers \Carica\Xsl\Runner\Autoloader::load
   */
   public function testLoadExpectingFalse() {
     $this->assertFalse(Autoloader::load('DOMDocument'));
   }
 
   /**
-  * @covers \Thw\Xsl\Runner\Autoloader::getFile
+  * @covers \Carica\Xsl\Runner\Autoloader::getFile
   */
   public function testGetFileExpectingFile() {
     $this->assertStringEndsWith(
@@ -31,7 +31,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-  * @covers \Thw\Xsl\Runner\Autoloader::getFile
+  * @covers \Carica\Xsl\Runner\Autoloader::getFile
   */
   public function testGetFileExpectingNull() {
     $this->assertNull(

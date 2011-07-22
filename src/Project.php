@@ -8,7 +8,7 @@
 * @package XslRunner
 */
 
-namespace Thw\Xsl\Runner;
+namespace Carica\Xsl\Runner;
 
 /**
 * Represents a single project that should be rendered using xsl.
@@ -19,7 +19,7 @@ class Project {
 
   /**
   * Render engine
-  * @var \Thw\Xsl\Runner\Engine
+  * @var \Carica\Xsl\Runner\Engine
   */
   private $_engine = NULL;
 
@@ -38,7 +38,7 @@ class Project {
   /**
   * Getter/Setter for the renderer engine
   *
-  * @param \Thw\Xsl\Runner\Engine $engine
+  * @param \Carica\Xsl\Runner\Engine $engine
   */
   public function engine(Engine $engine = NULL) {
     if (isset($engine)) {

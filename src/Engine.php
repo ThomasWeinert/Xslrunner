@@ -8,7 +8,7 @@
 * @package XslRunner
 */
 
-namespace Thw\Xsl\Runner;
+namespace Carica\Xsl\Runner;
 
 /**
 * Encapsulates the xsl processor and provides callback functions useable from the xsl.

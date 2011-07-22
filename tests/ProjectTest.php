@@ -1,13 +1,13 @@
 <?php
 
-namespace Thw\Xsl\Runner;
+namespace Carica\Xsl\Runner;
 
 include_once(__DIR__.'/TestCase.php');
 
 class ProjectTest extends TestCase {
 
   /**
-  * @covers \Thw\Xsl\Runner\Project::engine
+  * @covers \Carica\Xsl\Runner\Project::engine
   */
   public function testEngineGetAfterSet() {
     $engine = $this->getEngineFixture();
@@ -16,15 +16,15 @@ class ProjectTest extends TestCase {
   }
 
   /**
-  * @covers \Thw\Xsl\Runner\Project::engine
+  * @covers \Carica\Xsl\Runner\Project::engine
   */
   public function testEngineGetImplicitCreate() {
     $project = new Project();
-    $this->assertInstanceOf('\Thw\Xsl\Runner\Engine', $project->engine());
+    $this->assertInstanceOf('\Carica\Xsl\Runner\Engine', $project->engine());
   }
 
   /**
-  * @covers \Thw\Xsl\Runner\Project::render
+  * @covers \Carica\Xsl\Runner\Project::render
   */
   public function testRender() {
     $engine = $this->getEngineFixture();
@@ -42,7 +42,7 @@ class ProjectTest extends TestCase {
   }
 
   /**
-  * @covers \Thw\Xsl\Runner\Project::createDocument
+  * @covers \Carica\Xsl\Runner\Project::createDocument
   */
   public function testCreateDocument() {
     $project = new Project();
@@ -59,7 +59,7 @@ class ProjectTest extends TestCase {
 
   private function getEngineFixture() {
     $engine = $this->getMock(
-      '\\Thw\\Xsl\\Runner\\Engine',
+      '\\Carica\\Xsl\\Runner\\Engine',
       array('run')
     );
     return $engine;
