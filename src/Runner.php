@@ -12,7 +12,7 @@ namespace Thw\Xsl\Runner;
 
 require(__DIR__.'/Engine.php');
 require(__DIR__.'/Project.php');
-require(__DIR__.'/Streamwrapper/Xml.php');
+require(__DIR__.'/Streamwrapper/Pathmapper.php');
 
 /**
 * Render a project of xml files using a xsl template.
