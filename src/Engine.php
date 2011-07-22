@@ -35,11 +35,6 @@ class Engine {
       $this->_processor = $processor;
     } elseif (is_null($this->_processor)) {
       $this->_processor = new \XsltProcessor;
-      $this->_processor->registerPHPFunctions(
-        array(
-          '\\Thw\\Xsl\Runner\\loadXmlDocument'
-        )
-      );
     }
     return $this->_processor;
   }
@@ -52,8 +47,20 @@ class Engine {
   * @param \DOMDocument
   */
   public function run($xml, $xsl) {
+    $this->registerCallbacks();
     $this->processor()->importStylesheet($xsl);
     return $this->processor()->transformToDoc($xml);
+  }
+
+  /**
+  * Register the php function callbacks.
+  */
+  private function registerCallbacks() {
+    $this->processor()->registerPHPFunctions(
+      array(
+        '\\Thw\\Xsl\Runner\\loadXmlDocument'
+      )
+    );
   }
 }
 
