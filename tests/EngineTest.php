@@ -55,9 +55,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
   * Fixtures
   ****************/
 
-  public function getProcessorFixture() {
+  private function getProcessorFixture() {
     $processor = $this->getMock(
-      '\XsltProcessor',
+      '\\XsltProcessor',
       array('importStylesheet', 'transformToDoc', 'registerPhpFunctions')
     );
     return $processor;
