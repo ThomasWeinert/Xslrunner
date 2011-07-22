@@ -10,9 +10,8 @@
 
 namespace Thw\Xsl\Runner;
 
-require(__DIR__.'/Engine.php');
-require(__DIR__.'/Project.php');
-require(__DIR__.'/Streamwrapper/Pathmapper.php');
+include_once(__DIR__.'/Autoloader.php');
+spl_autoload_register('\\'.__NAMESPACE__.'\\Autoloader::load');
 
 /**
 * Render a project of xml files using a xsl template.

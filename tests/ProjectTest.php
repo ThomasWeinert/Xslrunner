@@ -2,7 +2,7 @@
 
 namespace Thw\Xsl\Runner;
 
-include_once(__DIR__.'/../src/Project.php');
+include_once(__DIR__.'/TestCase.php');
 
 class ProjectTest extends \PHPUnit_Framework_TestCase {
 

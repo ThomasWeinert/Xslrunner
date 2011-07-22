@@ -2,7 +2,7 @@
 
 namespace Thw\Xsl\Runner;
 
-include_once(__DIR__.'/../src/Engine.php');
+include_once(__DIR__.'/TestCase.php');
 
 class EngineTest extends \PHPUnit_Framework_TestCase {
 
