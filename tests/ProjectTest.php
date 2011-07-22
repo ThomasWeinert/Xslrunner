@@ -4,7 +4,7 @@ namespace Thw\Xsl\Runner;
 
 include_once(__DIR__.'/TestCase.php');
 
-class ProjectTest extends \PHPUnit_Framework_TestCase {
+class ProjectTest extends TestCase {
 
   /**
   * @covers \Thw\Xsl\Runner\Project::engine
