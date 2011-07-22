@@ -31,8 +31,8 @@ class Project {
   public function render($template) {
     $xsl = new \DOMDocument();
     $xsl->load($template);
-    $xml =  $this->createDocument();
-    $this->engine()->run($xml, $xsl);
+    $xml = $this->createDocument();
+    return $this->engine()->run($xml, $xsl);
   }
 
   /**
@@ -54,7 +54,7 @@ class Project {
   *
   * @return DOMDocument $dom
   */
-  private function createDocument() {
+  public function createDocument() {
     $dom = new \DOMDocument();
     $dom->appendChild($dom->createElement('project'));
     return $dom;
