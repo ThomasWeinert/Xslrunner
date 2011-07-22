@@ -41,6 +41,18 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
+  /**
+  * @covers \Thw\Xsl\Runner\Project::createDocument
+  */
+  public function testCreateDocument() {
+    $project = new Project();
+    $result = $project->createDocument();
+    $this->assertEquals(
+      '<project/>',
+      $result->saveXml($result->documentElement)
+    );
+  }
+
   /****************
   * Fixtures
   ****************/
