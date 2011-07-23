@@ -31,14 +31,14 @@ class Runner {
   */
   public function execute() {
     $this->options()->process();
-    Streamwrapper\Pathmapper::register(
+    Streamwrapper\PathMapper::register(
       'source',
       $this->options()->getOption('xml')->value
     );
-    Streamwrapper\Pathmapper::register(
+    Streamwrapper\PathMapper::register(
       'target',
       $this->options()->getOption('output')->value,
-      Streamwrapper\Pathmapper::CREATE_DIRECTORIES | Streamwrapper\Pathmapper::WRITE_FILES
+      Streamwrapper\PathMapper::CREATE_DIRECTORIES | Streamwrapper\PathMapper::WRITE_FILES
     );
     $project = new \Carica\Xsl\Runner\Project();
     $project->render($this->options()->getOption('template')->value);

@@ -17,19 +17,37 @@ namespace Carica\Xsl\Runner\Streamwrapper;
 *
 * @package XslRunner
 */
-class Pathmapper {
+class PathMapper {
 
+  /**
+  * Allow streamwrapper to create directories
+  *
+  * @var integer
+  */
   const CREATE_DIRECTORIES = 1;
 
+  /**
+  * Allow streamwrapper to write files (not only read them)
+  *
+  * @var integer
+  */
   const WRITE_FILES = 2;
 
   /**
-  * directory mapping
+  * directory mapping and options
   *
-  * @var array(string=>string)
+  * @var array(string=>array())
   */
   private static $_paths = array();
 
+  /**
+  * Register protocol with mapping for streamwrapper
+  *
+  * @param string $protocol
+  * @param string $path
+  * @param integer $options
+  * @return array|NULL
+  */
   public static function register($protocol, $path, $options = 0) {
     self::$_paths[$protocol] = array(
       'path' => $path,
@@ -38,12 +56,22 @@ class Pathmapper {
     stream_wrapper_register($protocol, __CLASS__);
   }
 
-  public function get($path) {
-    $protocol = substr($path, 0, strpos($path, '://'));
-    return self::$_paths[$protocol];
+  /**
+  * Get path mapping for path or protocol
+  *
+  * @param string $path
+  * @return array|NULL
+  */
+  public static function get($path) {
+    $offset = strpos($path, '://');
+    $protocol = (FALSE !== $offset) ? substr($path, 0, $offset) : $path;
+    return isset(self::$_paths[$protocol]) ? self::$_paths[$protocol] : NULL;
   }
 
-  public function clear() {
+  /**
+  * Unregister stream protocols and remove mappings
+  */
+  public static function clear() {
     foreach (self::$_paths as $protocol => $data) {
       stream_wrapper_unregister($protocol);
       unset(self::$_paths[$protocol]);
