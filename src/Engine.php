@@ -58,7 +58,7 @@ class Engine {
   private function registerCallbacks() {
     $this->processor()->registerPHPFunctions(
       array(
-        '\\'.__NAMESPACE__.'\\loadXmlDocument'
+        '\\'.__NAMESPACE__.'\\XsltCallback'
       )
     );
   }
@@ -70,8 +70,10 @@ class Engine {
 * @param string $url
 * @return \DOMDocument
 */
-function loadXmlDocument($url) {
-  $dom = new \DOMDocument();
-  $dom->load($url);
-  return $dom;
+function XslTCallback($class) {
+  $class = '\\'.__NAMESPACE__.'\\Callback\\'.$class;
+  $callback = new $class();
+  $arguments = func_get_args();
+  array_shift($arguments);
+  return $callback->execute($arguments);
 }

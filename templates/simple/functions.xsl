@@ -10,7 +10,7 @@
 
 <func:function name="func:load-document">
   <xsl:param name="url"/>
-  <func:result select="php:function('\Carica\Xsl\Runner\loadXmlDocument', $url)"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'LoadDocument', $url)"/>
 </func:function>
 
 </xsl:stylesheet>
