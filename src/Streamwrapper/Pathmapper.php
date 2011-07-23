@@ -19,12 +19,36 @@ namespace Carica\Xsl\Runner\Streamwrapper;
 */
 class Pathmapper {
 
+  const CREATE_DIRECTORIES = 1;
+
+  const WRITE_FILES = 2;
+
   /**
   * directory mapping
   *
   * @var array(string=>string)
   */
-  public static $paths = array();
+  private static $_paths = array();
+
+  public static function register($protocol, $path, $options = 0) {
+    self::$_paths[$protocol] = array(
+      'path' => $path,
+      'options' => $options
+    );
+    stream_wrapper_register($protocol, __CLASS__);
+  }
+
+  public function get($path) {
+    $protocol = substr($path, 0, strpos($path, '://'));
+    return self::$_paths[$protocol];
+  }
+
+  public function clear() {
+    foreach (self::$_paths as $protocol => $data) {
+      stream_wrapper_unregister($protocol);
+      unset(self::$_paths[$protocol]);
+    }
+  }
 
   /**
   * file handler
@@ -69,8 +93,8 @@ class Pathmapper {
   }
 
   private function getFileName($path) {
-    $pathIndex = substr($path, 0, strpos($path, '://'));
-    $fileName = self::$paths[$pathIndex].substr($path, strpos($path, '://') + 3);
+    $mapping = self::get($path);
+    $fileName = $mapping['path'].substr($path, strpos($path, '://') + 3);
     return str_replace('%5C', '/', $fileName);
   }
 }
