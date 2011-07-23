@@ -87,9 +87,13 @@ class PathMapper {
 
   public function stream_open($path, $mode, $options, &$openedPath) {
     $this->_fh = fopen(
-      $this->getFileName($path), $mode
+      self::getFileName($path), $mode, $options
     );
     return is_resource($this->_fh);
+  }
+
+  public function stream_close() {
+    return fclose($this->_fh);
   }
 
   public function stream_read($count) {
@@ -100,27 +104,27 @@ class PathMapper {
     return fwrite($this->_fh, $data);
   }
 
-  function stream_tell() {
+  public function stream_tell() {
     return ftell($this->_fh);
   }
 
-  function stream_eof() {
+  public function stream_eof() {
     return feof($this->_fh);
   }
 
-  function stream_seek($offset, $whence) {
+  public function stream_seek($offset, $whence) {
     return fseek($this->_fh, $offset, $whence);
   }
 
-  function stream_stat() {
+  public function stream_stat() {
     return fstat($this->_fh);
   }
 
-  function url_stat($path, $flags) {
-    return stat($this->getFileName($path));
+  public function url_stat($path, $flags) {
+    return stat(self::getFileName($path));
   }
 
-  private function getFileName($path) {
+  public static function getFileName($path) {
     $mapping = self::get($path);
     $fileName = $mapping['path'].substr($path, strpos($path, '://') + 3);
     return str_replace('%5C', '/', $fileName);
