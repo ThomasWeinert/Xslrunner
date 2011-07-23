@@ -71,6 +71,7 @@ class PathMapperTest extends Runner\TestCase {
   /**
   * @covers \Carica\Xsl\Runner\Streamwrapper\PathMapper::stream_open
   * @covers \Carica\Xsl\Runner\Streamwrapper\PathMapper::stream_close
+  * @covers \Carica\Xsl\Runner\Streamwrapper\PathMapper::handle
   */
   public function testStreamOpenAndClose() {
     PathMapper::register('sample', __DIR__.'/TestData/');
@@ -85,6 +86,29 @@ class PathMapperTest extends Runner\TestCase {
   public function testStreamRead() {
     PathMapper::register('sample', __DIR__.'/TestData/');
     $this->assertEquals('SUCCESS', file_get_contents('sample://sample.txt'));
+  }
+
+  /**
+  * @covers \Carica\Xsl\Runner\Streamwrapper\PathMapper::stream_write
+  */
+  public function testStreamWrite() {
+    PathMapper_TestProxy::register('sample', __DIR__.'/TestData/');
+    $fh = fopen('sample://sample-write.txt', 'w+');
+    fwrite($fh, 'OK FAILED');
+    fseek($fh, 0, SEEK_SET);
+    $this->assertEquals('OK', fread($fh, 2));
+    fclose($fh);
+  }
+
+  /**
+  * @covers \Carica\Xsl\Runner\Streamwrapper\PathMapper::stream_tell
+  */
+  public function testStreamTell() {
+    PathMapper_TestProxy::register('sample', __DIR__.'/TestData/');
+    $fh = fopen('sample://sample-write.txt', 'w+');
+    fwrite($fh, 'ok');
+    $this->assertEquals(2, ftell($fh));
+    fclose($fh);
   }
 
   /**
@@ -148,5 +172,14 @@ class PathMapperTest extends Runner\TestCase {
       array('file.xml', 'sample://file.xml'),
       array('directory/file.xml', 'sample://directory/file.xml')
     );
+  }
+}
+
+class PathMapper_TestProxy extends PathMapper {
+
+  protected static $_class = __CLASS__;
+
+  public function stream_open($path, $mode, $options, &$openedPath) {
+    return is_resource($this->handle(fopen('php://memory', $mode)));
   }
 }

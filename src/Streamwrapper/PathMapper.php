@@ -34,11 +34,25 @@ class PathMapper {
   const WRITE_FILES = 2;
 
   /**
+  * wrapper class name including namespace
+  *
+  * @var string
+  */
+  protected static $_class = __CLASS__;
+
+  /**
   * directory mapping and options
   *
   * @var array(string=>array())
   */
   private static $_paths = array();
+
+  /**
+  * openend file resource
+  *
+  * @var resource|NULL
+  */
+  private $_handle = NULL;
 
   /**
   * Register protocol with mapping for streamwrapper
@@ -53,7 +67,7 @@ class PathMapper {
       'path' => $path,
       'options' => $options
     );
-    stream_wrapper_register($protocol, __CLASS__);
+    stream_wrapper_register($protocol, static::$_class);
   }
 
   /**
@@ -77,56 +91,57 @@ class PathMapper {
       unset(self::$_paths[$protocol]);
     }
   }
-
-  /**
-  * file handler
-  *
-  * @var resource
-  */
-  private $_fh = NULL;
-
-  public function stream_open($path, $mode, $options, &$openedPath) {
-    $this->_fh = fopen(
-      self::getFileName($path), $mode, $options
-    );
-    return is_resource($this->_fh);
-  }
-
-  public function stream_close() {
-    return fclose($this->_fh);
-  }
-
-  public function stream_read($count) {
-    return fread($this->_fh, $count);
-  }
-
-  public function stream_write($data) {
-    return fwrite($this->_fh, $data);
-  }
-
-  public function stream_tell() {
-    return ftell($this->_fh);
-  }
-
-  public function stream_eof() {
-    return feof($this->_fh);
-  }
-
-  public function stream_seek($offset, $whence) {
-    return fseek($this->_fh, $offset, $whence);
-  }
-
-  public function stream_stat() {
-    return fstat($this->_fh);
-  }
-
-  public function url_stat($path, $flags) {
-    return stat(self::getFileName($path));
-  }
-
   public static function getFileName($path) {
     $mapping = self::get($path);
     $fileName = $mapping['path'].substr($path, strpos($path, '://') + 3);
     return str_replace('%5C', '/', $fileName);
+  }
+
+  protected function handle($handle = NULL) {
+    if (isset($handle)) {
+      $this->_handle = $handle;
+    }
+    return $this->_handle;
+  }
+
+  public function stream_open($path, $mode, $options, &$openedPath) {
+    $handle = $this->handle(
+      fopen(
+        self::getFileName($path), $mode, $options
+      )
+    );
+    return is_resource($handle);
+  }
+
+  public function stream_close() {
+    return fclose($this->handle());
+  }
+
+  public function stream_read($count) {
+    return fread($this->handle(), $count);
+  }
+
+  public function stream_write($data) {
+    return fwrite($this->handle(), $data);
+  }
+
+  public function stream_tell() {
+    return ftell($this->handle());
+  }
+
+  public function stream_eof() {
+    return feof($this->handle());
+  }
+
+  public function stream_seek($offset, $whence) {
+    return fseek($this->handle(), $offset, $whence);
+  }
+
+  public function stream_stat() {
+    return fstat($this->handle());
+  }
+
+  public function url_stat($path, $flags) {
+    return stat(self::getFileName($path));
   }
 }
