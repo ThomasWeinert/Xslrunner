@@ -70,7 +70,7 @@ class Engine {
 * @param string $url
 * @return \DOMDocument
 */
-function XslTCallback($class) {
+function XsltCallback($class) {
   $class = '\\'.__NAMESPACE__.'\\Callback\\'.$class;
   $callback = new $class();
   $arguments = func_get_args();

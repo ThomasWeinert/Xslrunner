@@ -3,6 +3,8 @@
 namespace Carica\Xsl\Runner;
 
 include_once(__DIR__.'/TestCase.php');
+include_once(__DIR__.'/TestData/callback.php');
+
 
 class EngineTest extends TestCase {
 
@@ -48,6 +50,12 @@ class EngineTest extends TestCase {
     $engine->processor($processor);
     $this->assertInstanceOf(
       '\DOMDocument', $engine->run(new \DOMDocument(), new \DOMDocument())
+    );
+  }
+
+  public function testXsltCallback() {
+    $this->assertEquals(
+      'success',  XsltCallback('CallbackSample', 'success')
     );
   }
 
