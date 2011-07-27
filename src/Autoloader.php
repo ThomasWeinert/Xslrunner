@@ -37,7 +37,7 @@ class Autoloader {
   */
   public static function getFile($class) {
     if (0 === strpos($class, __NAMESPACE__)) {
-      return str_replace(
+      return __DIR__.str_replace(
         '\\', DIRECTORY_SEPARATOR, substr($class, strlen(__NAMESPACE__))
       ).'.php';
     }
