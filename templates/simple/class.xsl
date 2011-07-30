@@ -3,13 +3,13 @@
   version="1.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:exsl="http://exslt.org/common"
-  xmlns:func="http://exslt.org/functions"
-  xmlns:pdox="http://xml.phpdox.de/src#"                
-  extension-element-prefixes="exsl func">
+  xmlns:pdox="http://xml.phpdox.de/src#"
+  xmlns:cxr="http://thomas.weinert.info/carica/xr"
+  extension-element-prefixes="exsl">
   
 <xsl:template name="file-class">
   <xsl:param name="fileName" />
-  <xsl:variable name="file" select="func:load-document($fileName)/pdox:file"/>
+  <xsl:variable name="file" select="cxr:load-document($fileName)/pdox:file"/>
   <xsl:variable name="target" select="concat('target://class.', $file/pdox:class/@full, '.xhtml')"/>
   <document source="{$fileName}" />
   <exsl:document
