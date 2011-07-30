@@ -7,8 +7,10 @@
   xmlns:pdox="http://xml.phpdox.de/src#"                
   extension-element-prefixes="exsl func">
 
+<!-- callback definitions -->
+<xsl:import href="callbacks.xsl"/>
+
 <!-- default templates to use and maybe overload -->
-<xsl:import href="functions.xsl"/>
 <xsl:import href="html.xsl"/>
 
 <xsl:import href="class.xsl"/>
