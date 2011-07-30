@@ -35,13 +35,20 @@ class Runner {
       'source',
       $this->options()->getOption('xml')->value
     );
+    $targetDirectory = $this->options()->getOption('output')->value;
+    $templateFile = $this->options()->getOption('template')->value;
     Streamwrapper\PathMapper::register(
       'target',
-      $this->options()->getOption('output')->value,
+      $targetDirectory,
       Streamwrapper\PathMapper::CREATE_DIRECTORIES | Streamwrapper\PathMapper::WRITE_FILES
     );
+    $directory = new \Carica\Xsl\Runner\Directory();
+    if (file_exists($targetDirectory.'index.xhtml')) {
+      $directory->remove($targetDirectory);
+    }
+    $directory->copy(dirname($templateFile).'/files/', $targetDirectory.'/files/');
     $project = new \Carica\Xsl\Runner\Project();
-    $project->render($this->options()->getOption('template')->value);
+    $project->render($templateFile);
   }
 
   /**
