@@ -1,3 +1,57 @@
 body {
   background-color: #FFF;
+  padding: 2em;
+  font-family: sans-serif;
 }
+
+a {
+  color: #4770A8
+}
+
+div.pageHeader {
+  background: #4770A8 url(background-title.png) repeat-x left top;
+  height: 40px;
+  color: #FFF;
+}
+div.pageHeader h1 {
+  margin: 0;
+  padding: 0.2em;
+  font-size: 1.6em;
+}
+
+div.pageFooter {
+  margin-top: 2em;  
+  background: #4770A8 url(background-title.png) repeat-x left top;
+  height: 20px;
+  color: #FFF;
+}
+
+div.navigation {
+  float: right;
+}
+
+
+/*
+ function prototype
+*/
+.functionPrototype {
+  font-family: monospace; 
+}
+.functionPrototype .name {
+  font-weight: bold; 
+  padding-left: 1em;
+}
+.functionPrototype ul {
+  list-style: none;
+  display: inline;  
+  margin: 0;
+  padding: 0.2em;
+}
+.functionPrototype ul li {
+  list-style: none;
+  display: inline;  
+}
+.functionPrototype ul.variableType li {
+  font-style: italic;  
+}
+  

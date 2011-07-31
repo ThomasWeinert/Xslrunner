@@ -70,11 +70,16 @@
             <xsl:with-param name="parameterName" select="$name"/>
             <xsl:with-param name="documentation" select="$documentation[@variable = $name]"/>
           </xsl:call-template>
-          <xsl:if test="position() = last()">
-            <xsl:for-each select="$parameters[@optional = 'true']">
-              <xsl:text>]</xsl:text>
-            </xsl:for-each>
-          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="position() = last()">
+              <xsl:for-each select="$parameters[@optional = 'true']">
+                <xsl:text>]</xsl:text>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>, </xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:for-each>
       </ul>
     </xsl:if>

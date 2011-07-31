@@ -28,22 +28,23 @@
         <xsl:with-param name="title" select="$file/pdox:class/@full"/>
       </xsl:call-template>
       <body>
-         <div class="navigation">
-           <xsl:call-template name="navigation-classes">
-             <xsl:with-param name="selectedClass" select="$file/pdox:class/@full"/>
-           </xsl:call-template>
-         </div>
-         <div class="content">
-           <h1 class="className"><xsl:value-of select="$file/pdox:class/@full"/></h1>
-           <p>
-             <xsl:value-of select="$file/pdox:class/pdox:docblock/pdox:description/@compact"/>
-           </p>
-           <xsl:call-template name="file-class-methods">
-             <xsl:with-param name="methods" select="$file/pdox:class/pdox:method"/>
-             <xsl:with-param name="fileName" select="$file/pdox:head/@file"/>
-           </xsl:call-template>
-         </div>
-         <xsl:call-template name="page-footer"/>
+        <xsl:call-template name="page-header"/>
+        <div class="navigation">
+          <xsl:call-template name="navigation-classes">
+            <xsl:with-param name="selectedClass" select="$file/pdox:class/@full"/>
+          </xsl:call-template>
+        </div>
+        <div class="content">
+          <h2 class="className"><xsl:value-of select="$file/pdox:class/@full"/></h2>
+          <p>
+            <xsl:value-of select="$file/pdox:class/pdox:docblock/pdox:description/@compact"/>
+          </p>
+          <xsl:call-template name="file-class-methods">
+            <xsl:with-param name="methods" select="$file/pdox:class/pdox:method"/>
+            <xsl:with-param name="fileName" select="$file/pdox:head/@file"/>
+          </xsl:call-template>
+        </div>
+        <xsl:call-template name="page-footer"/>
       </body>
     </html>
   </exsl:document>
