@@ -7,6 +7,8 @@
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
   extension-element-prefixes="exsl">
   
+<xsl:import href="function.xsl"/>
+  
 <xsl:template name="file-class">
   <xsl:param name="fileName" />
   <xsl:variable name="file" select="cxr:load-document($fileName)/pdox:file"/>
@@ -38,6 +40,7 @@
            </p>
            <xsl:call-template name="file-class-methods">
              <xsl:with-param name="methods" select="$file/pdox:class/pdox:method"/>
+             <xsl:with-param name="fileName" select="$file/pdox:head/@file"/>
            </xsl:call-template>
          </div>
          <xsl:call-template name="page-footer"/>
@@ -48,11 +51,16 @@
 
 <xsl:template name="file-class-methods">
   <xsl:param name="methods"/>
+  <xsl:param name="fileName"/>
   <xsl:for-each select="$methods">
     <xsl:sort select="@name"/>
     <div class="method">
       <h3><xsl:value-of select="@name"/></h3>
       <p><xsl:value-of select="pdox:docblock/pdox:description/@compact"/></p>
+      <xsl:call-template name="function-prototype">
+        <xsl:with-param name="function" select="."/>
+        <xsl:with-param name="file" select="$fileName"/>
+      </xsl:call-template>
     </div>
   </xsl:for-each>
 </xsl:template>
