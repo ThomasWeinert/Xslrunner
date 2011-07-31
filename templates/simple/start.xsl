@@ -14,6 +14,7 @@
 <xsl:import href="html.xsl"/>
 
 <xsl:import href="class.xsl"/>
+<xsl:import href="classes.xsl"/>
 <xsl:import href="navigation.xsl"/>
 
 <xsl:output 
@@ -29,6 +30,7 @@
 
 <xsl:template match="/">	
   <result>
+    <xsl:call-template name="class-index" />
     <xsl:call-template name="classes" />
     <classes count="{count($CLASSES)}"/>
     <interfaces count="{count($INTERFACES)}"/>
