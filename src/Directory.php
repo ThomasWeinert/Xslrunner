@@ -63,7 +63,7 @@ class Directory {
   */
   public static function force($directory) {
     if (!(file_exists($directory) && is_dir($directory))) {
-      mkdir($path, 0755, TRUE);
+      mkdir($directory, 0755, TRUE);
     }
   }
 
