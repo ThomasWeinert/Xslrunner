@@ -16,7 +16,7 @@
   <xsl:param name="className" />
   <xsl:variable name="file" select="cxr:load-document($fileName)/pdox:file"/>
   <xsl:variable name="class" select="$file//pdox:class[@full = $className]"/>
-  <xsl:variable name="target" select="concat('target://', cxr:filename-of-class($class))"/>
+  <xsl:variable name="target" select="concat('target://', cxr:filename-of-class($class/@full))"/>
   <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($class/@full, '\'))"/>
   <xsl:variable name="consoleOutput" select="cxr:console-echo('.')"/>
   <document source="{$fileName}" />
@@ -43,7 +43,12 @@
           </xsl:call-template>
         </div>
         <div class="content">
-          <h2 class="className"><xsl:value-of select="$class/@full"/></h2>
+          <h2 class="className">
+            <xsl:call-template name="namespace-ariadne">
+              <xsl:with-param name="namespace" select="$class/@full"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+          </h2>
           <p>
             <xsl:value-of select="$class/pdox:docblock/pdox:description/@compact"/>
           </p>

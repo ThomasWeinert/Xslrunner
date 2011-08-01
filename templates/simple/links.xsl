@@ -17,10 +17,23 @@
   <xsl:variable name="href">
     <xsl:value-of select="$path"/>
     <xsl:text>classes/</xsl:text>
-    <xsl:value-of select="$class/@full"/>
+    <xsl:value-of select="$class"/>
     <xsl:value-of select="$OUTPUT_EXTENSION"/>
   </xsl:variable>
   <func:result select="$href"/>
+</func:function>
+
+<func:function name="cxr:filename-of-namespace">
+  <xsl:param name="namespace"/>
+  <xsl:param name="path"></xsl:param>
+  <xsl:variable name="href">
+    <xsl:value-of select="$path"/>
+    <xsl:text>classes</xsl:text>
+    <xsl:value-of select="$OUTPUT_EXTENSION"/>
+    <xsl:text>#ns\</xsl:text>
+    <xsl:value-of select="$namespace"/>
+  </xsl:variable>
+  <func:result select="translate($href, '\', '/')"/>
 </func:function>
   
 </xsl:stylesheet>

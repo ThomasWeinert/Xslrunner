@@ -48,13 +48,13 @@
   <xsl:param name="classes"/>
   <xsl:param name="namespace"></xsl:param>
   <xsl:if test="$namespace != ''">
-    <h2 id="ns\{$namespace}"><xsl:value-of select="$namespace" /></h2>
+    <h2 id="ns/{translate($namespace, '\', '/')}"><xsl:value-of select="$namespace" /></h2>
   </xsl:if>
   <xsl:if test="count($classes) &gt; 0">
     <ul>
       <xsl:for-each select="$classes">
         <xsl:sort select="@name"/>
-        <li><a href="{cxr:filename-of-class(.)}"><xsl:value-of select="@name" /></a></li>
+        <li><a href="{cxr:filename-of-class(./@full)}"><xsl:value-of select="@name" /></a></li>
       </xsl:for-each>
     </ul>
   </xsl:if>

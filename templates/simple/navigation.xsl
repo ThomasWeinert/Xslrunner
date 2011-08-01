@@ -15,5 +15,47 @@
     </li>
   </ul>
 </xsl:template>
+
+<xsl:template name="namespace-ariadne">
+  <xsl:param name="namespace"/>
+  <xsl:param name="path"></xsl:param>
+  <xsl:call-template name="namespace-ariadne-loop">
+    <xsl:with-param name="stack" select="$namespace"/>
+    <xsl:with-param name="path" select="$path"/>
+  </xsl:call-template>    
+</xsl:template>
+
+<xsl:template name="namespace-ariadne-loop">
+  <xsl:param name="stack"/>
+  <xsl:param name="prefix"></xsl:param>
+  <xsl:param name="path"></xsl:param>
+  
+  <xsl:variable name="caption">
+    <xsl:choose>
+      <xsl:when test="contains($stack, '\')"><xsl:value-of select="substring-before($stack, '\')"/></xsl:when>
+      <xsl:otherwise><xsl:value-of select="$stack"/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <xsl:variable name="namespace" select="concat($prefix, $caption)"/>
+    
+  <xsl:if test="$prefix != ''">
+    <xsl:text>\</xsl:text>
+  </xsl:if>
+  <xsl:choose>
+    <xsl:when test="$NAMESPACES[@name = $namespace]">
+      <a href="{cxr:filename-of-namespace($namespace, $path)}"><xsl:value-of select="$caption"/></a>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$caption"/>
+    </xsl:otherwise>
+  </xsl:choose>
+  <xsl:if test="contains($stack, '\')">
+    <xsl:call-template name="namespace-ariadne-loop">
+      <xsl:with-param name="stack" select="substring-after($stack, '\')"/>
+      <xsl:with-param name="prefix" select="concat($prefix, $caption, '\')"/>
+      <xsl:with-param name="path" select="$path"/>
+    </xsl:call-template>    
+  </xsl:if>
+</xsl:template>
   
 </xsl:stylesheet>

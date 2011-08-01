@@ -27,6 +27,7 @@
 
 <!-- define data variables -->
 <xsl:variable name="CLASSES" select="document('source://classes.xml')/pdox:classes"/>
+<xsl:variable name="NAMESPACES" select="document('source://namespaces.xml')/pdox:namespaces/pdox:namespace"/>
 
 <xsl:template match="/">	
   <result>
