@@ -9,6 +9,8 @@
   extension-element-prefixes="func"
   exclude-result-prefixes="#default pdox cxr">
   
+<xsl:param name="OUTPUT_EXTENSION">.html</xsl:param>
+  
 <func:function name="cxr:filename-of-class">
   <xsl:param name="class"/>
   <xsl:param name="path"></xsl:param>
@@ -16,7 +18,7 @@
     <xsl:value-of select="$path"/>
     <xsl:text>classes/</xsl:text>
     <xsl:value-of select="$class/@full"/>
-    <xsl:text>.xhtml</xsl:text>
+    <xsl:value-of select="$OUTPUT_EXTENSION"/>
   </xsl:variable>
   <func:result select="$href"/>
 </func:function>

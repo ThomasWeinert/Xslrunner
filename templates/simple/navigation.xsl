@@ -7,20 +7,12 @@
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
   exclude-result-prefixes="#default pdox cxr">
 
-<xsl:template name="navigation-classes">
-  <xsl:param name="selected"></xsl:param>
+<xsl:template name="navigation">
   <xsl:param name="path"></xsl:param>
   <ul>
-    <xsl:for-each select="$CLASSES">
-      <xsl:sort select="@full"/>
-      <li>
-        <xsl:if test="$selected = @full">
-          <xsl:attribute name="class">selected</xsl:attribute>
-        </xsl:if>
-        <xsl:variable name="fileName" select="cxr:filename-of-class(., $path)"/>
-        <a href="{$fileName}"><xsl:value-of select="@name"/></a>
-      </li>
-    </xsl:for-each>
+    <li>
+      <a href="{$path}classes{$OUTPUT_EXTENSION}">Classes</a>
+    </li>
   </ul>
 </xsl:template>
   

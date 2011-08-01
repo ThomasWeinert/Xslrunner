@@ -13,8 +13,11 @@
   
 <xsl:template name="file-class">
   <xsl:param name="fileName" />
+  <xsl:param name="className" />
   <xsl:variable name="file" select="cxr:load-document($fileName)/pdox:file"/>
-  <xsl:variable name="target" select="concat('target://classes/', $file/pdox:class/@full, '.xhtml')"/>
+  <xsl:variable name="class" select="$file//pdox:class[@full = $className]"/>
+  <xsl:variable name="target" select="concat('target://', cxr:filename-of-class($class))"/>
+  <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($class/@full, '\'))"/>
   <document source="{$fileName}" />
   <exsl:document
     href="{$target}"
@@ -27,25 +30,25 @@
     omit-xml-declaration="yes">
     <html>
       <xsl:call-template name="html-head">
-        <xsl:with-param name="title" select="$file/pdox:class/@full"/>
-        <xsl:with-param name="path">../</xsl:with-param>
+        <xsl:with-param name="title" select="$class/@full"/>
+        <xsl:with-param name="path" select="$path"/>
       </xsl:call-template>
       <body>
         <xsl:call-template name="page-header"/>
         <div class="navigation">
-          <xsl:call-template name="navigation-classes">
-            <xsl:with-param name="selected" select="$file/pdox:class/@full"/>
-            <xsl:with-param name="path">../</xsl:with-param>
+          <xsl:call-template name="navigation">
+            <xsl:with-param name="selected" select="$class/@full"/>
+            <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
         </div>
         <div class="content">
-          <h2 class="className"><xsl:value-of select="$file/pdox:class/@full"/></h2>
+          <h2 class="className"><xsl:value-of select="$class/@full"/></h2>
           <p>
-            <xsl:value-of select="$file/pdox:class/pdox:docblock/pdox:description/@compact"/>
+            <xsl:value-of select="$class/pdox:docblock/pdox:description/@compact"/>
           </p>
           <xsl:call-template name="file-class-methods">
-            <xsl:with-param name="methods" select="$file/pdox:class/pdox:method"/>
-            <xsl:with-param name="fileName" select="$file/pdox:head/@file"/>
+            <xsl:with-param name="methods" select="$class/pdox:method"/>
+            <xsl:with-param name="fileName" select="$fileName"/>
           </xsl:call-template>
         </div>
         <xsl:call-template name="page-footer"/>

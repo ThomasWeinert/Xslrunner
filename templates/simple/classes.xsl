@@ -10,9 +10,9 @@
   exclude-result-prefixes="#default pdox cxr">
   
 <xsl:template name="class-index">
-  <xsl:param name="classes" />
+  <xsl:param name="classIndex" />
   <exsl:document
-    href="target://classes.xhtml"
+    href="target://classes.html"
     method="xml" 
     encoding="utf-8" 
     standalone="yes" 
@@ -27,12 +27,37 @@
       <body>
         <xsl:call-template name="page-header"/>
         <div class="content">
-          <xsl:call-template name="navigation-classes"/>
+          <xsl:call-template name="class-list">
+            <xsl:with-param name="classes" select="$classIndex/pdox:class"/>
+          </xsl:call-template> 
+          <xsl:for-each select="$classIndex/pdox:namespace">
+            <xsl:sort select="@name"/>
+            <xsl:call-template name="class-list">
+              <xsl:with-param name="classes" select="pdox:class"/>
+              <xsl:with-param name="namespace" select="@name"/>
+            </xsl:call-template> 
+          </xsl:for-each>
         </div>
         <xsl:call-template name="page-footer"/>
       </body>
     </html>
   </exsl:document>
+</xsl:template>
+
+<xsl:template name="class-list">
+  <xsl:param name="classes"/>
+  <xsl:param name="namespace"></xsl:param>
+  <xsl:if test="$namespace != ''">
+    <h2 id="ns\{$namespace}"><xsl:value-of select="$namespace" /></h2>
+  </xsl:if>
+  <xsl:if test="count($classes) &gt; 0">
+    <ul>
+      <xsl:for-each select="$classes">
+        <xsl:sort select="@name"/>
+        <li><a href="{cxr:filename-of-class(.)}"><xsl:value-of select="@name" /></a></li>
+      </xsl:for-each>
+    </ul>
+  </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

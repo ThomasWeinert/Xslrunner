@@ -26,24 +26,27 @@
   omit-xml-declaration="no" />
 
 <!-- define data variables -->
-<xsl:variable name="CLASSES" select="document('source://classes.xml')/pdox:classes/pdox:class"/>
-<xsl:variable name="INTERFACES" select="document('source://interfaces.xml')/pdox:interfaces/pdox:interface"/>
+<xsl:variable name="CLASSES" select="document('source://classes.xml')/pdox:classes"/>
 
 <xsl:template match="/">	
   <result>
-    <xsl:call-template name="class-index" />
-    <xsl:call-template name="classes" />
-    <classes count="{count($CLASSES)}"/>
-    <interfaces count="{count($INTERFACES)}"/>
+    <xsl:call-template name="class-index">
+      <xsl:with-param name="classIndex" select="$CLASSES"/>
+    </xsl:call-template>
+    <xsl:call-template name="classes">
+      <xsl:with-param name="classIndex" select="$CLASSES"/>
+    </xsl:call-template>
   </result>
 </xsl:template>
 
 <xsl:template name="classes">
-  <xsl:for-each select="$CLASSES">
+  <xsl:param name="classIndex" />
+  <xsl:for-each select="$classIndex//pdox:class">
     <xsl:variable name="fileName" select="concat('source://', @xml)"/>
     <file src="{$fileName}"><xsl:value-of select="@full"/></file>
     <xsl:call-template name="file-class">
       <xsl:with-param name="fileName" select="$fileName"/>
+      <xsl:with-param name="className" select="@full"/>
     </xsl:call-template>
   </xsl:for-each>
 </xsl:template>

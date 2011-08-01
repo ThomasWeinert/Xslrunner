@@ -43,7 +43,7 @@ class Runner {
       Streamwrapper\PathMapper::CREATE_DIRECTORIES | Streamwrapper\PathMapper::WRITE_FILES
     );
     $directory = new \Carica\Xsl\Runner\Directory();
-    if (file_exists($targetDirectory.'index.xhtml')) {
+    if (file_exists($targetDirectory.'index.html')) {
       $directory->remove($targetDirectory);
     }
     $directory->copy(dirname($templateFile).'/files/', $targetDirectory.'/files/');
