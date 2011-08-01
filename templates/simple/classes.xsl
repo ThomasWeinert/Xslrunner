@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
   version="1.0" 
+  xmlns="http://www.w3.org/1999/xhtml/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:exsl="http://exslt.org/common"
   xmlns:pdox="http://xml.phpdox.de/src#"
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
-  extension-element-prefixes="exsl">
+  extension-element-prefixes="exsl"
+  exclude-result-prefixes="#default pdox cxr">
   
 <xsl:template name="class-index">
   <xsl:param name="classes" />

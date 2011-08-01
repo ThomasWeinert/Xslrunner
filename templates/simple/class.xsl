@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
 <xsl:stylesheet
   version="1.0" 
+  xmlns="http://www.w3.org/1999/xhtml/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:exsl="http://exslt.org/common"
   xmlns:pdox="http://xml.phpdox.de/src#"
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
-  extension-element-prefixes="exsl">
+  extension-element-prefixes="exsl"
+  exclude-result-prefixes="#default pdox cxr">
   
 <xsl:import href="function.xsl"/>
   
 <xsl:template name="file-class">
   <xsl:param name="fileName" />
   <xsl:variable name="file" select="cxr:load-document($fileName)/pdox:file"/>
-  <xsl:variable name="target" select="concat('target://class.', $file/pdox:class/@full, '.xhtml')"/>
+  <xsl:variable name="target" select="concat('target://classes/', $file/pdox:class/@full, '.xhtml')"/>
   <document source="{$fileName}" />
   <exsl:document
     href="{$target}"
@@ -26,12 +28,14 @@
     <html>
       <xsl:call-template name="html-head">
         <xsl:with-param name="title" select="$file/pdox:class/@full"/>
+        <xsl:with-param name="path">../</xsl:with-param>
       </xsl:call-template>
       <body>
         <xsl:call-template name="page-header"/>
         <div class="navigation">
           <xsl:call-template name="navigation-classes">
-            <xsl:with-param name="selectedClass" select="$file/pdox:class/@full"/>
+            <xsl:with-param name="selected" select="$file/pdox:class/@full"/>
+            <xsl:with-param name="path">../</xsl:with-param>
           </xsl:call-template>
         </div>
         <div class="content">

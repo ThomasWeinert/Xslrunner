@@ -1,13 +1,18 @@
 <?xml version="1.0"?>
 <xsl:stylesheet
   version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  xmlns="http://www.w3.org/1999/xhtml/"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:pdox="http://xml.phpdox.de/src#"
+  xmlns:cxr="http://thomas.weinert.info/carica/xr"
+  exclude-result-prefixes="#default pdox cxr">
   
 <xsl:template name="html-head">
   <xsl:param name="title"></xsl:param>
+  <xsl:param name="path"></xsl:param>
   <head>
     <title><xsl:value-of select="$title"/></title>
-    <link rel="stylesheet" type="text/css" href="files/style.css"/>
+    <link rel="stylesheet" type="text/css" href="{$path}files/style.css"/>
   </head>
 </xsl:template>  
 

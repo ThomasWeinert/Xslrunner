@@ -1,20 +1,21 @@
 <?xml version="1.0"?>
 <xsl:stylesheet
   version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  xmlns:exsl="http://exslt.org/common"
-  xmlns:func="http://exslt.org/functions"
-  xmlns:pdox="http://xml.phpdox.de/src#"                
-  extension-element-prefixes="exsl func">
+  xmlns="http://www.w3.org/1999/xhtml/"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:pdox="http://xml.phpdox.de/src#"
+  xmlns:cxr="http://thomas.weinert.info/carica/xr"
+  exclude-result-prefixes="#default pdox cxr">
 
 <!-- callback definitions -->
-<xsl:import href="callbacks.xsl"/>
+<xsl:import href="library/library.xsl"/>
 
 <!-- default templates to use and maybe overload -->
 <xsl:import href="html.xsl"/>
 
 <xsl:import href="class.xsl"/>
 <xsl:import href="classes.xsl"/>
+<xsl:import href="links.xsl"/>
 <xsl:import href="navigation.xsl"/>
 
 <xsl:output 
