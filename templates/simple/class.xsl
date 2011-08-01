@@ -18,6 +18,7 @@
   <xsl:variable name="class" select="$file//pdox:class[@full = $className]"/>
   <xsl:variable name="target" select="concat('target://', cxr:filename-of-class($class))"/>
   <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($class/@full, '\'))"/>
+  <xsl:variable name="consoleOutput" select="cxr:console-echo('.')"/>
   <document source="{$fileName}" />
   <exsl:document
     href="{$target}"
