@@ -11,6 +11,8 @@
 
 namespace Carica\Xsl\Runner\Streamwrapper;
 
+use Carica\Xsl\Runner as Runner;
+
 /**
 * A php streamwrapper that uses base directories based on a mapping with the registered
 * wrapper name.
@@ -91,12 +93,50 @@ class PathMapper {
       unset(self::$_paths[$protocol]);
     }
   }
-  public static function getFileName($path) {
+
+  /**
+  * Get local filename
+  */
+  public static function getFileName($path, $createFile = FALSE) {
     $mapping = self::get($path);
-    $fileName = $mapping['path'].substr($path, strpos($path, '://') + 3);
-    return str_replace('%5C', '/', $fileName);
+    $fileName = str_replace(
+      '%5C', '/', $mapping['path'].substr($path, strpos($path, '://') + 3)
+    );
+    if ($createFile) {
+      if (!($mapping['options'] & self::WRITE_FILES)) {
+        throw new LogicException('Mode was no marked writeable.');
+      }
+      $directory = dirname($fileName);
+      if (!(file_exists($directory) && is_dir($directory))) {
+        if ($mapping['options'] & self::CREATE_DIRECTORIES) {
+          Runner\Directory::force($directory);
+        }
+      }
+    }
+    return $fileName;
   }
 
+  /**
+  * Validate if given mode writes the file
+  */
+  public static function isWriteMode($mode) {
+    $writeModes = array(
+      'w', 'a', '+'
+    );
+    foreach ($writeModes as $writeMode) {
+      if (FALSE !== strpos($mode, $writeMode)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+  * getter/setter for the file handle
+  *
+  * @param integer $handle
+  * @return integer
+  */
   protected function handle($handle = NULL) {
     if (isset($handle)) {
       $this->_handle = $handle;
@@ -107,7 +147,7 @@ class PathMapper {
   public function stream_open($path, $mode, $options, &$openedPath) {
     $handle = $this->handle(
       fopen(
-        self::getFileName($path), $mode, $options
+        self::getFileName($path, self::isWriteMode($mode)), $mode, $options
       )
     );
     return is_resource($handle);
