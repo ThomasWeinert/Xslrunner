@@ -29,8 +29,12 @@ class Runner {
   /**
   * Start runner
   */
-  public function execute() {
-    $this->options()->process();
+  public function execute(array $arguments = NULL) {
+    $this->options()->process($arguments);
+    if ($this->options()->helpOptionSet()) {
+      $this->showUsage();
+      return;
+    }
     Streamwrapper\PathMapper::register(
       'source',
       $this->options()->getOption('xml')->value
@@ -52,6 +56,13 @@ class Runner {
   }
 
   /**
+  * Show console help
+  */
+  public function showUsage() {
+    echo $this->options()->getHelpText('');
+  }
+
+  /**
   * Getter/Setter for command line options object
   *
   * @param \ezcConsoleInput $options
@@ -63,6 +74,7 @@ class Runner {
     } elseif (is_null($this->_options)) {
       $options = new \ezcConsoleInput();
       $options->registerOption($option = new \ezcConsoleOption('h', 'help'));
+      $option->shorthelp = 'Show this output.';
       $option->isHelpOption = TRUE;
       $options->registerOption(
         new \ezcConsoleOption(
