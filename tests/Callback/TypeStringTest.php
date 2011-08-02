@@ -1,0 +1,54 @@
+<?php
+
+namespace Carica\Xsl\Runner\Callback;
+
+use \Carica\Xsl\Runner as Runner;
+
+include_once(__DIR__.'/../TestCase.php');
+
+class TypeStringTest extends Runner\TestCase {
+
+  /**
+  * @covers \Carica\Xsl\Runner\Callback\LoadDocument::execute
+  * @dataProvider provideStringAndXml
+  */
+  public function testExecute($typeString, $expectedXml) {
+    $callback = new TypeString();
+    $doc = $callback->execute(array($typeString));
+    $this->assertEquals(
+      $expectedXml,
+      $doc->saveXml($doc->documentElement)
+    );
+  }
+
+  public static function provideStringAndXml() {
+    return array(
+      array(
+        'array',
+        '<variable-type>'.
+          '<type>array</type>'.
+        '</variable-type>'
+      ),
+      array(
+        'array|NULL',
+        '<variable-type>'.
+          '<type>array</type>'.
+          '<text>|</text>'.
+          '<type>NULL</type>'.
+        '</variable-type>'
+      ),
+      array(
+        'array(string=>integer,...)',
+        '<variable-type>'.
+          '<type>array</type>'.
+          '<text>(</text>'.
+          '<type>string</type>'.
+          '<text>=&gt;</text>'.
+          '<type>integer</type>'.
+          '<text>,...)</text>'.
+          '<type></type>'.
+        '</variable-type>'
+      )
+    );
+  }
+}
