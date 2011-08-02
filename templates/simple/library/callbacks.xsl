@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <xsl:stylesheet
-  version="1.0" 
+  version="1.0"
   xmlns="http://www.w3.org/1999/xhtml/"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:php="http://php.net/xsl"
   xmlns:func="http://exslt.org/functions"
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
   extension-element-prefixes="php func"
   exclude-result-prefixes="#default cxr">
 
-<!-- 
+<!--
   Output something to the console.
 -->
 <func:function name="cxr:console-echo">
@@ -17,7 +17,7 @@
   <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'ConsoleEcho', $string)"/>
 </func:function>
 
-<!-- 
+<!--
   The default xpath "document()" function seems not to be able to be used with dynamic values read
   from other xml documents. So here is a callback function that just loads a dom.
 -->
@@ -26,7 +26,16 @@
   <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'LoadDocument', $url)"/>
 </func:function>
 
-<!-- 
+<!--
+  The default xpath "document()" function seems not to be able to be used with dynamic values read
+  from other xml documents. So here is a callback function that just loads a dom.
+-->
+<func:function name="cxr:parse-type-string">
+  <xsl:param name="string"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'TypeString', string($string))"/>
+</func:function>
+
+<!--
   If a problem (missing documentation, inconsisty) is found, a message is stored using php.
 -->
 <func:function name="cxr:errors-store">
@@ -38,7 +47,7 @@
   />
 </func:function>
 
-<!-- 
+<!--
   Return the stored error messages.
 -->
 <func:function name="cxr:errors">

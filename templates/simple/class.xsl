@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <xsl:stylesheet
-  version="1.0" 
+  version="1.0"
   xmlns="http://www.w3.org/1999/xhtml/"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
   xmlns:pdox="http://xml.phpdox.de/src#"
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
   extension-element-prefixes="exsl"
   exclude-result-prefixes="#default pdox cxr">
-  
+
 <xsl:import href="function.xsl"/>
-  
+
 <xsl:template name="file-class">
   <xsl:param name="fileName" />
   <xsl:param name="className" />
@@ -22,12 +22,12 @@
   <document source="{$fileName}" />
   <exsl:document
     href="{$target}"
-    method="xml" 
-    encoding="utf-8" 
-    standalone="yes" 
-    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
-    indent="yes" 
+    method="xml"
+    encoding="utf-8"
+    standalone="yes"
+    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+    indent="yes"
     omit-xml-declaration="yes">
     <html>
       <xsl:call-template name="html-head">
@@ -55,6 +55,7 @@
           <xsl:call-template name="file-class-methods">
             <xsl:with-param name="methods" select="$class/pdox:method"/>
             <xsl:with-param name="fileName" select="$fileName"/>
+            <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
         </div>
         <xsl:call-template name="page-footer"/>
@@ -66,6 +67,7 @@
 <xsl:template name="file-class-methods">
   <xsl:param name="methods"/>
   <xsl:param name="fileName"/>
+  <xsl:param name="path"></xsl:param>
   <xsl:for-each select="$methods">
     <xsl:sort select="@name"/>
     <div class="method">
@@ -74,9 +76,10 @@
       <xsl:call-template name="function-prototype">
         <xsl:with-param name="function" select="."/>
         <xsl:with-param name="file" select="$fileName"/>
+        <xsl:with-param name="path" select="$path"/>
       </xsl:call-template>
     </div>
   </xsl:for-each>
 </xsl:template>
-  
+
 </xsl:stylesheet>

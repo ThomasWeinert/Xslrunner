@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <xsl:stylesheet
-  version="1.0" 
+  version="1.0"
   xmlns="http://www.w3.org/1999/xhtml/"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:pdox="http://xml.phpdox.de/src#"
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
   exclude-result-prefixes="#default pdox cxr">
-  
+
 <xsl:template name="function-prototype">
   <xsl:param name="function" />
+  <xsl:param name="path"></xsl:param>
   <xsl:param name="name" select="$function/@name"/>
   <!--  position -->
   <xsl:param name="file"></xsl:param>
@@ -22,7 +23,7 @@
   <xsl:param name="parameters" select="$function/pdox:parameter"/>
   <xsl:param name="parameterDocs" select="$function/pdox:docblock/pdox:param"/>
   <xsl:param name="return" select="$function/pdox:docblock/@return"/>
-  
+
   <div class="functionPrototype">
     <ul class="properties">
       <li><xsl:value-of select="$visibility" /></li>
@@ -38,6 +39,7 @@
       <xsl:if test="$return and $return != ''">
 	      <xsl:call-template name="variable-type">
 	        <xsl:with-param name="typeString" select="$return/@type"/>
+          <xsl:with-param name="path" select="$path"/>
 	      </xsl:call-template>
       </xsl:if>
       <span class="name">
@@ -46,6 +48,7 @@
       <xsl:call-template name="function-parameters">
         <xsl:with-param name="parameters" select="$parameters"/>
         <xsl:with-param name="documentation" select="$parameterDocs"/>
+        <xsl:with-param name="path" select="$path"/>
       </xsl:call-template>
     </ul>
   </div>
@@ -54,6 +57,7 @@
 <xsl:template name="function-parameters">
   <xsl:param name="parameters"/>
   <xsl:param name="documentation"/>
+  <xsl:param name="path"></xsl:param>
   <span class="parameters">
     <xsl:text>(</xsl:text>
     <xsl:if test="$parameters and count($parameters) > 0">
@@ -70,6 +74,7 @@
             <xsl:with-param name="parameter" select="."/>
             <xsl:with-param name="parameterName" select="$name"/>
             <xsl:with-param name="documentation" select="$documentation[@variable = $name]"/>
+            <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
           <xsl:choose>
             <xsl:when test="position() = last()">
@@ -91,6 +96,7 @@
 <xsl:template name="function-parameter">
   <xsl:param name="parameter"/>
   <xsl:param name="documentation"/>
+  <xsl:param name="path"></xsl:param>
   <xsl:param name="parameterName">
     <xsl:if test="$parameter/@byreference = 'true'">
       <xsl:text>&amp;</xsl:text>
@@ -103,11 +109,13 @@
       <xsl:when test="$documentation and $documentation/@type != ''">
         <xsl:call-template name="variable-type">
           <xsl:with-param name="typeString" select="$documentation/@type"/>
+          <xsl:with-param name="path" select="$path"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="variable-type">
           <xsl:with-param name="typeString" select="$parameter/@type"/>
+          <xsl:with-param name="path" select="$path"/>
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
@@ -120,9 +128,33 @@
 
 <xsl:template name="variable-type">
   <xsl:param name="typeString"/>
-  <ul class="variableType">
-    <li><xsl:value-of select="$typeString"/></li>
-  </ul>
+  <xsl:param name="path"></xsl:param>
+  <xsl:if test="$typeString != '{unknown}'">
+    <xsl:variable name="parts" select="cxr:parse-type-string($typeString)/*/*"/>
+    <ul class="variableType">
+      <xsl:for-each select="$parts">
+        <li>
+          <xsl:choose>
+            <xsl:when test="local-name(.) = 'type'">
+              <xsl:attribute name="class">type</xsl:attribute>
+              <xsl:variable name="type" select="text()"/>
+              <xsl:choose>
+                <xsl:when test="$CLASSES//pdox:class[concat('\', @full) = $type]">
+                  <a href="{cxr:filename-of-class(substring($type, 2), $path)}">
+                    <xsl:value-of select="$type"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise><xsl:value-of select="$type"/></xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="text()"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </li>
+      </xsl:for-each>
+    </ul>
+  </xsl:if>
 </xsl:template>
-  
+
 </xsl:stylesheet>
