@@ -19,6 +19,7 @@
   <xsl:variable name="target" select="concat('target://', cxr:filename-of-class($class/@full))"/>
   <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($class/@full, '\'))"/>
   <xsl:variable name="consoleOutput" select="cxr:console-echo('.')"/>
+  <xsl:variable name="namespace" select="$class/parent::pdox:namespace/@name"/>
   <document source="{$fileName}" />
   <exsl:document
     href="{$target}"
@@ -55,6 +56,7 @@
           <xsl:call-template name="file-class-methods">
             <xsl:with-param name="methods" select="$class/pdox:method"/>
             <xsl:with-param name="fileName" select="$fileName"/>
+            <xsl:with-param name="namespace" select="$namespace"/>
             <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
         </div>
@@ -68,6 +70,7 @@
   <xsl:param name="methods"/>
   <xsl:param name="fileName"/>
   <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
   <xsl:for-each select="$methods">
     <xsl:sort select="@name"/>
     <div class="method">
@@ -77,6 +80,7 @@
         <xsl:with-param name="function" select="."/>
         <xsl:with-param name="file" select="$fileName"/>
         <xsl:with-param name="path" select="$path"/>
+        <xsl:with-param name="namespace" select="$namespace"/>
       </xsl:call-template>
     </div>
   </xsl:for-each>

@@ -10,6 +10,7 @@
 <xsl:template name="function-prototype">
   <xsl:param name="function" />
   <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
   <xsl:param name="name" select="$function/@name"/>
   <!--  position -->
   <xsl:param name="file"></xsl:param>
@@ -40,6 +41,7 @@
 	      <xsl:call-template name="variable-type">
 	        <xsl:with-param name="typeString" select="$return/@type"/>
           <xsl:with-param name="path" select="$path"/>
+          <xsl:with-param name="namespace" select="$namespace"/>
 	      </xsl:call-template>
       </xsl:if>
       <span class="name">
@@ -49,6 +51,7 @@
         <xsl:with-param name="parameters" select="$parameters"/>
         <xsl:with-param name="documentation" select="$parameterDocs"/>
         <xsl:with-param name="path" select="$path"/>
+        <xsl:with-param name="namespace" select="$namespace"/>
       </xsl:call-template>
     </ul>
   </div>
@@ -58,6 +61,7 @@
   <xsl:param name="parameters"/>
   <xsl:param name="documentation"/>
   <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
   <span class="parameters">
     <xsl:text>(</xsl:text>
     <xsl:if test="$parameters and count($parameters) > 0">
@@ -75,6 +79,7 @@
             <xsl:with-param name="parameterName" select="$name"/>
             <xsl:with-param name="documentation" select="$documentation[@variable = $name]"/>
             <xsl:with-param name="path" select="$path"/>
+            <xsl:with-param name="namespace" select="$namespace"/>
           </xsl:call-template>
           <xsl:choose>
             <xsl:when test="position() = last()">
@@ -97,6 +102,7 @@
   <xsl:param name="parameter"/>
   <xsl:param name="documentation"/>
   <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
   <xsl:param name="parameterName">
     <xsl:if test="$parameter/@byreference = 'true'">
       <xsl:text>&amp;</xsl:text>
@@ -110,12 +116,14 @@
         <xsl:call-template name="variable-type">
           <xsl:with-param name="typeString" select="$documentation/@type"/>
           <xsl:with-param name="path" select="$path"/>
+          <xsl:with-param name="namespace" select="$namespace"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="variable-type">
           <xsl:with-param name="typeString" select="$parameter/@type"/>
           <xsl:with-param name="path" select="$path"/>
+          <xsl:with-param name="namespace" select="$namespace"/>
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
@@ -129,6 +137,7 @@
 <xsl:template name="variable-type">
   <xsl:param name="typeString"/>
   <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
   <xsl:if test="$typeString != '{unknown}'">
     <xsl:variable name="parts" select="cxr:parse-type-string($typeString)/*/*"/>
     <ul class="variableType">
@@ -140,6 +149,16 @@
               <xsl:variable name="type" select="text()"/>
               <xsl:choose>
                 <xsl:when test="$CLASSES//pdox:class[concat('\', @full) = $type]">
+                  <a href="{cxr:filename-of-class(substring($type, 2), $path)}">
+                    <xsl:value-of select="$type"/>
+                  </a>
+                </xsl:when>
+                <xsl:when test="$CLASSES//pdox:class[concat($namespace, '\', @name) = $type]">
+                  <a href="{cxr:filename-of-class(substring($type, 2), $path)}">
+                    <xsl:value-of select="$type"/>
+                  </a>
+                </xsl:when>
+                <xsl:when test="$namespace = '' and $CLASSES//pdox:class[@name = $type]">
                   <a href="{cxr:filename-of-class(substring($type, 2), $path)}">
                     <xsl:value-of select="$type"/>
                   </a>
