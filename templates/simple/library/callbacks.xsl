@@ -18,6 +18,15 @@
 </func:function>
 
 <!--
+  Output progress with dots to the console.
+-->
+<func:function name="cxr:console-progress">
+  <xsl:param name="reset"/>
+  <xsl:param name="maximum"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'ConsoleProgress', $reset, $maximum)"/>
+</func:function>
+
+<!--
   The default xpath "document()" function seems not to be able to be used with dynamic values read
   from other xml documents. So here is a callback function that just loads a dom.
 -->
