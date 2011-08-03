@@ -62,7 +62,9 @@ class Runner {
   * Show console help
   */
   public function showUsage() {
-    echo $this->options()->getHelpText('');
+    echo $this->options()->getHelpText(
+      "\nCarica XslRunner for phpDox version 0.1 alpha", 72, TRUE
+    );
   }
 
   /**
@@ -76,9 +78,9 @@ class Runner {
       $this->_options = $options;
     } elseif (is_null($this->_options)) {
       $options = new \ezcConsoleInput();
-      $options->registerOption($option = new \ezcConsoleOption('h', 'help'));
-      $option->shorthelp = 'Show this output.';
-      $option->isHelpOption = TRUE;
+      $options->registerOption($helpOption = new \ezcConsoleOption('h', 'help'));
+      $helpOption->longhelp = 'Show this output.';
+      $helpOption->isHelpOption = TRUE;
       $options->registerOption(
         new \ezcConsoleOption(
           'x',
@@ -86,7 +88,8 @@ class Runner {
           \ezcConsoleInput::TYPE_STRING,
           './xml/',
           FALSE,
-          'source directory'
+          'source directory',
+          'Source directory containing the xml files.'
         )
       );
       $options->registerOption(
@@ -96,7 +99,8 @@ class Runner {
           \ezcConsoleInput::TYPE_STRING,
           './xhtml/',
           FALSE,
-          'output directory'
+          'output directory',
+          'Output directory for the generated files.'
         )
       );
       $options->registerOption(
@@ -106,7 +110,8 @@ class Runner {
           \ezcConsoleInput::TYPE_STRING,
           './templates/simple/start.xsl',
           FALSE,
-          'template file'
+          'xslt template',
+          'Xslt template file to use.'
         )
       );
       $this->_options = $options;
