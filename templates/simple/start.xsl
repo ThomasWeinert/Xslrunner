@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xsl:stylesheet
-  version="1.0" 
+  version="1.0"
   xmlns="http://www.w3.org/1999/xhtml/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:pdox="http://xml.phpdox.de/src#"
@@ -18,18 +18,19 @@
 <xsl:import href="links.xsl"/>
 <xsl:import href="navigation.xsl"/>
 
-<xsl:output 
-  method="xml" 
-  encoding="utf-8" 
-  standalone="yes" 
-  indent="yes" 
+<xsl:output
+  method="xml"
+  encoding="utf-8"
+  standalone="yes"
+  indent="yes"
   omit-xml-declaration="no" />
 
 <!-- define data variables -->
 <xsl:variable name="CLASSES" select="document('source://classes.xml')/pdox:classes"/>
 <xsl:variable name="NAMESPACES" select="document('source://namespaces.xml')/pdox:namespaces/pdox:namespace"/>
 
-<xsl:template match="/">	
+<xsl:template match="/">
+  <xsl:variable name="consoleOutput" select="cxr:console-echo('&#10;Generating output from phpDox xml&#10;')"/>
   <result>
     <xsl:call-template name="class-index">
       <xsl:with-param name="classIndex" select="$CLASSES"/>
@@ -42,9 +43,11 @@
 
 <xsl:template name="classes">
   <xsl:param name="classIndex" />
+  <xsl:variable name="classCount" select="count($classIndex//pdox:class)" />
+  <xsl:variable name="consoleOutput" select="cxr:console-echo('&#10;Generating class files&#10;')"/>
   <xsl:for-each select="$classIndex//pdox:class">
     <xsl:variable name="fileName" select="concat('source://', @xml)"/>
-    <file src="{$fileName}"><xsl:value-of select="@full"/></file>
+    <xsl:variable name="consoleProgress" select="cxr:console-progress(position() = 1, $classCount)"/>
     <xsl:call-template name="file-class">
       <xsl:with-param name="fileName" select="$fileName"/>
       <xsl:with-param name="className" select="@full"/>
