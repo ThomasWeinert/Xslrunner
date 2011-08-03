@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
-  version="1.0" 
+  version="1.0"
   xmlns="http://www.w3.org/1999/xhtml/"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exsl="http://exslt.org/common"
   xmlns:pdox="http://xml.phpdox.de/src#"
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
   extension-element-prefixes="exsl"
   exclude-result-prefixes="#default pdox cxr">
-  
+
 <xsl:template name="class-index">
   <xsl:param name="classIndex" />
+  <xsl:variable name="consoleOutput" select="cxr:console-echo('&#10;Generating class index&#10;')"/>
   <exsl:document
     href="target://classes.html"
-    method="xml" 
-    encoding="utf-8" 
-    standalone="yes" 
-    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
-    indent="yes" 
+    method="xml"
+    encoding="utf-8"
+    standalone="yes"
+    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+    indent="yes"
     omit-xml-declaration="yes">
     <html>
       <xsl:call-template name="html-head">
@@ -29,13 +30,13 @@
         <div class="content">
           <xsl:call-template name="class-list">
             <xsl:with-param name="classes" select="$classIndex/pdox:class"/>
-          </xsl:call-template> 
+          </xsl:call-template>
           <xsl:for-each select="$classIndex/pdox:namespace">
             <xsl:sort select="@name"/>
             <xsl:call-template name="class-list">
               <xsl:with-param name="classes" select="pdox:class"/>
               <xsl:with-param name="namespace" select="@name"/>
-            </xsl:call-template> 
+            </xsl:call-template>
           </xsl:for-each>
         </div>
         <xsl:call-template name="page-footer"/>
