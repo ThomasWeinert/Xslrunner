@@ -42,15 +42,18 @@
           <xsl:with-param name="path" select="$path"/>
 	      </xsl:call-template>
       </xsl:if>
-      <span class="name">
-        <xsl:value-of select="@name" />
-      </span>
-      <xsl:call-template name="function-parameters">
-        <xsl:with-param name="parameters" select="$parameters"/>
-        <xsl:with-param name="documentation" select="$parameterDocs"/>
-        <xsl:with-param name="path" select="$path"/>
-      </xsl:call-template>
     </ul>
+    <span class="name">
+      <xsl:if test="@byreference = 'true'">
+        <xsl:text>&amp;</xsl:text>
+      </xsl:if>
+      <xsl:value-of select="@name" />
+    </span>
+    <xsl:call-template name="function-parameters">
+      <xsl:with-param name="parameters" select="$parameters"/>
+      <xsl:with-param name="documentation" select="$parameterDocs"/>
+      <xsl:with-param name="path" select="$path"/>
+    </xsl:call-template>
   </div>
 </xsl:template>
 
@@ -105,6 +108,9 @@
     <xsl:value-of select="$parameter/@name"/>
   </xsl:param>
   <li>
+    <xsl:if test="$parameter/@optional = 'true'">
+      <xsl:text>[</xsl:text>
+    </xsl:if>
     <xsl:choose>
       <xsl:when test="$documentation and $documentation/@type != ''">
         <xsl:call-template name="variable-type">
@@ -119,9 +125,6 @@
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:if test="$parameter/@optional = 'true'">
-      <xsl:text>[</xsl:text>
-    </xsl:if>
     <span class="name"><xsl:value-of select="$parameterName"/></span>
   </li>
 </xsl:template>
