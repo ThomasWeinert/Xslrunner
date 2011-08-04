@@ -33,7 +33,8 @@ class Autoloader {
   /**
   * get filename if it is part of the current namespace (or a subnamespace)
   *
-  * @param string|NULL $class
+  * @param string $class
+  * @return string|NULL
   */
   public static function getFile($class) {
     if (0 === strpos($class, __NAMESPACE__)) {
