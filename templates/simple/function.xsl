@@ -23,7 +23,7 @@
   <!-- parameter data -->
   <xsl:param name="parameters" select="$function/pdox:parameter"/>
   <xsl:param name="parameterDocs" select="$function/pdox:docblock/pdox:param"/>
-  <xsl:param name="return" select="$function/pdox:docblock/@return"/>
+  <xsl:param name="return" select="$function/pdox:docblock/pdox:return"/>
 
   <div class="functionPrototype">
     <ul class="properties">
@@ -37,14 +37,14 @@
       <xsl:if test="$isStatic">
         <li>static</li>
       </xsl:if>
-      <xsl:if test="$return and $return != ''">
-	      <xsl:call-template name="variable-type">
-	        <xsl:with-param name="typeString" select="$return/@type"/>
-          <xsl:with-param name="path" select="$path"/>
-          <xsl:with-param name="namespace" select="string($namespace)"/>
-	      </xsl:call-template>
-      </xsl:if>
     </ul>
+    <xsl:if test="$return and $return/@type != ''">
+      <xsl:call-template name="variable-type">
+        <xsl:with-param name="typeString" select="$return/@type"/>
+        <xsl:with-param name="path" select="$path"/>
+        <xsl:with-param name="namespace" select="string($namespace)"/>
+      </xsl:call-template>
+    </xsl:if>
     <span class="name">
       <xsl:if test="@byreference = 'true'">
         <xsl:text>&amp;</xsl:text>

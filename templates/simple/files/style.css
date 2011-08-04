@@ -34,26 +34,47 @@ div.navigation {
  function prototype
 */
 .functionPrototype {
-  font-family: monospace; 
+  font-family: monospace;
+}
+.functionPrototype ul.properties {
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+.functionPrototype ul.properties li {
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  display: inline;
 }
 .functionPrototype .name {
   font-weight: bold; 
 }
-.functionPrototype ul {
+.functionPrototype ul.parameters {
   list-style: none;
   display: inline;  
   margin: 0;
   padding: 0;
 }
-.functionPrototype ul li {
+.functionPrototype ul.parameters li {
   list-style: none;
-  padding: 0.2em;
-  display: inline;  
+  margin: 0;
+  padding: 0;
+  display: inline;
 }
-.functionPrototype ul.variableType {
+
+/*
+ variable type hint
+*/
+ul.variableType {
+  display: inline; 
+  margin: 0;
+  padding: 0;
   padding-right: 0.5em;
 }
-.functionPrototype ul.variableType li {
+ul.variableType li {
+  display: inline; 
   font-style: italic;  
 }
   
