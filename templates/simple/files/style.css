@@ -30,7 +30,6 @@ div.navigation {
   float: right;
 }
 
-
 /*
  function prototype
 */
@@ -39,19 +38,48 @@ div.navigation {
 }
 .functionPrototype .name {
   font-weight: bold; 
-  padding-left: 1em;
 }
 .functionPrototype ul {
   list-style: none;
   display: inline;  
   margin: 0;
-  padding: 0.2em;
+  padding: 0;
 }
 .functionPrototype ul li {
   list-style: none;
+  padding: 0.2em;
   display: inline;  
+}
+.functionPrototype ul.variableType {
+  padding-right: 0.5em;
 }
 .functionPrototype ul.variableType li {
   font-style: italic;  
 }
   
+/*
+ class inheritance
+*/
+.classInheritance {
+  font-family: monospace;
+}
+.classInheritance .name {
+  font-weight: bold; 
+  padding-left: 1em;
+}
+.classInheritance ul {
+  list-style: none;
+  display: inline;  
+  margin: 0;
+  padding: 0.2em;
+}
+.classInheritance ul li {
+  list-style: none;
+  display: inline;  
+}
+.classInheritance ul.variableType {
+  padding: 0.2em;
+}
+.classInheritance ul.variableType li {
+  font-style: italic;  
+}

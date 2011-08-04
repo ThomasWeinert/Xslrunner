@@ -49,6 +49,35 @@
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
           </h2>
+          <xsl:if test="$class/pdox:extends|$class/pdox:implements">
+            <ul class="classInheritance">
+              <xsl:if test="$class/pdox:extends">
+                <li>
+                  <span class="keyword">extends</span>
+                  <xsl:call-template name="variable-type">
+                    <xsl:with-param name="typeString" select="$class/pdox:extends/@class"/>
+                    <xsl:with-param name="path" select="$path"/>
+                    <xsl:with-param name="namespace" select="$class/pdox:extends/@namespace"/>
+                  </xsl:call-template>
+                </li>
+              </xsl:if>
+              <xsl:if test="$class/pdox:implements">
+                <li>
+                  <span class="keyword">implements</span>
+                  <xsl:for-each select="$class/pdox:implements">
+                    <xsl:if test="position() &gt; 1">
+                      <xsl:text>, </xsl:text>
+                    </xsl:if>
+                    <xsl:call-template name="variable-type">
+                      <xsl:with-param name="typeString" select="@interface"/>
+                      <xsl:with-param name="path" select="$path"/>
+                      <xsl:with-param name="namespace" select="@namespace"/>
+                    </xsl:call-template>
+                  </xsl:for-each>
+                </li>
+              </xsl:if>
+            </ul>
+          </xsl:if>
           <p>
             <xsl:value-of select="$class/pdox:docblock/pdox:description/@compact"/>
           </p>
