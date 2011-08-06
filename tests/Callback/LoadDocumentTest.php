@@ -13,7 +13,7 @@ class LoadDocumentTest extends Runner\TestCase {
   */
   public function testExecute() {
     $callback = new LoadDocument();
-    $doc = $callback->execute(array(__DIR__.'/TestData/simple.xml'));
+    $doc = $callback(__DIR__.'/TestData/simple.xml');
     $this->assertEquals(
       '<success/>',
       $doc->saveXml($doc->documentElement)

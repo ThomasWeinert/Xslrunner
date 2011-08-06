@@ -32,7 +32,7 @@
 <xsl:variable name="NAMESPACES" select="document('source://namespaces.xml')/pdox:namespaces/pdox:namespace"/>
 
 <xsl:template match="/">
-  <xsl:variable name="consoleOutput" select="cxr:console-echo('&#10;Generating output from phpDox xml&#10;')"/>
+  <xsl:variable name="consoleOutput" select="cxr:console-write('Generating output from phpDox xml')"/>
   <result>
     <xsl:call-template name="class-index">
       <xsl:with-param name="classIndex" select="$CLASSES"/>
@@ -46,7 +46,7 @@
 <xsl:template name="classes">
   <xsl:param name="classIndex" />
   <xsl:variable name="classCount" select="count($classIndex//pdox:class)" />
-  <xsl:variable name="consoleOutput" select="cxr:console-echo('&#10;Generating class files&#10;')"/>
+  <xsl:variable name="consoleOutputStart" select="cxr:console-write('Generating class files')"/>
   <xsl:for-each select="$classIndex//pdox:class">
     <xsl:variable name="fileName" select="concat('source://', @xml)"/>
     <xsl:variable name="consoleProgress" select="cxr:console-progress(position() = 1, $classCount)"/>
@@ -55,6 +55,7 @@
       <xsl:with-param name="className" select="@full"/>
     </xsl:call-template>
   </xsl:for-each>
+  <xsl:variable name="consoleOutputDone" select="cxr:console-write('&#10;')"/>
 </xsl:template>
 
 </xsl:stylesheet>

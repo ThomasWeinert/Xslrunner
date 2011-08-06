@@ -72,8 +72,24 @@ class Engine {
 */
 function XsltCallback($class) {
   $class = '\\'.__NAMESPACE__.'\\Callback\\'.$class;
+  if ($offset = strpos($class, '::')) {
+    $method = substr($class, $offset + 2);
+    $class = substr($class, 0, $offset);
+  } else {
+    $method = NULL;
+  }
   $callback = new $class();
-  $arguments = func_get_args();
-  array_shift($arguments);
-  return $callback->execute($arguments);
+  if ($callback instanceOf Callback) {
+    $arguments = func_get_args();
+    array_shift($arguments);
+    if ($method) {
+      return call_user_func_array(array($callback, $method), $arguments);
+    } else {
+      return call_user_func_array($callback, $arguments);
+    }
+  } else {
+    throw new \UnexpectedValueException(
+      sprintf('Invalid callback: "%s".', $class)
+    );
+  }
 }

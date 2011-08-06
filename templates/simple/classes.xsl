@@ -11,7 +11,7 @@
 
 <xsl:template name="class-index">
   <xsl:param name="classIndex" />
-  <xsl:variable name="consoleOutput" select="cxr:console-echo('&#10;Generating class index&#10;')"/>
+  <xsl:variable name="consoleOutput" select="cxr:console-write('Generating class index')"/>
   <exsl:document
     href="target://classes.html"
     method="xml"
