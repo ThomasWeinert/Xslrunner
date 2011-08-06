@@ -1,3 +1,3 @@
 @echo off
-set PHPBIN=c:\anwendungen\php\php.exe
+set PHPBIN=php.exe
 %PHPBIN% runner.php %*
