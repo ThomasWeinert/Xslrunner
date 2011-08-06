@@ -9,7 +9,7 @@
   extension-element-prefixes="exsl"
   exclude-result-prefixes="#default pdox cxr">
 
-<xsl:import href="function.xsl"/>
+<xsl:import href="prototype.xsl"/>
 
 <xsl:template name="file-class">
   <xsl:param name="fileName" />
@@ -25,9 +25,8 @@
     method="xml"
     encoding="utf-8"
     standalone="yes"
-    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-    indent="yes"
+    doctype-public="HTML"
+    indent="no"
     omit-xml-declaration="yes">
     <html>
       <xsl:call-template name="html-head">
@@ -45,39 +44,19 @@
         <div class="content">
           <h2 class="className">
             <xsl:call-template name="namespace-ariadne">
-              <xsl:with-param name="namespace" select="$class/@full"/>
+              <xsl:with-param name="namespace" select="$class/@namespace"/>
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
+            <xsl:if test="string($class/@namespace) != ''">
+              <xsl:text>\</xsl:text>
+            </xsl:if>
+            <xsl:value-of select="@name"/>
           </h2>
-          <xsl:if test="$class/pdox:extends|$class/pdox:implements">
-            <ul class="classInheritance">
-              <xsl:if test="$class/pdox:extends">
-                <li>
-                  <span class="keyword">extends</span>
-                  <xsl:call-template name="variable-type">
-                    <xsl:with-param name="typeString" select="$class/pdox:extends/@class"/>
-                    <xsl:with-param name="path" select="$path"/>
-                    <xsl:with-param name="namespace" select="$class/pdox:extends/@namespace"/>
-                  </xsl:call-template>
-                </li>
-              </xsl:if>
-              <xsl:if test="$class/pdox:implements">
-                <li>
-                  <span class="keyword">implements</span>
-                  <xsl:for-each select="$class/pdox:implements">
-                    <xsl:if test="position() &gt; 1">
-                      <xsl:text>, </xsl:text>
-                    </xsl:if>
-                    <xsl:call-template name="variable-type">
-                      <xsl:with-param name="typeString" select="@interface"/>
-                      <xsl:with-param name="path" select="$path"/>
-                      <xsl:with-param name="namespace" select="@namespace"/>
-                    </xsl:call-template>
-                  </xsl:for-each>
-                </li>
-              </xsl:if>
-            </ul>
-          </xsl:if>
+          <xsl:call-template name="class-prototype">
+            <xsl:with-param name="class" select="$class"/>
+            <xsl:with-param name="namespace" select="$class/@namespace"/>
+            <xsl:with-param name="path" select="$path"/>
+          </xsl:call-template>
           <p>
             <xsl:value-of select="$class/pdox:docblock/pdox:description/@compact"/>
           </p>

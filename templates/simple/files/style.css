@@ -20,7 +20,7 @@ div.pageHeader h1 {
 }
 
 div.pageFooter {
-  margin-top: 2em;  
+  margin-top: 2em;
   background: #4770A8 url(background-title.png) repeat-x left top;
   height: 20px;
   color: #FFF;
@@ -33,74 +33,42 @@ div.navigation {
 /*
  function prototype
 */
-.functionPrototype {
+.prototype {
   font-family: monospace;
+  font-size: 1.2em;
 }
-.functionPrototype ul.properties {
+.prototype ul {
+  margin: 0;
+  padding: 0;
+  display: inline;
+  list-style-type: none;
+}
+.prototype ul li {
+  display: inline;
+}
+.prototype ul.inheritance {
+  margin-left: 0.5em;
+}
+.prototype ul.types {
+  margin-right: 0.5em;
+}
+.prototype ul.types li.type {
+  font-style: italic;
+}
+.prototype .keyword {
   font-weight: bold;
-  margin: 0;
-  padding: 0;
-  display: inline;
+  margin-right: 0.5em;
 }
-.functionPrototype ul.properties li {
+.prototype .name {
   font-weight: bold;
-  margin: 0;
-  padding: 0;
-  display: inline;
-}
-.functionPrototype .name {
-  font-weight: bold; 
-}
-.functionPrototype ul.parameters {
-  list-style: none;
-  display: inline;  
-  margin: 0;
-  padding: 0;
-}
-.functionPrototype ul.parameters li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: inline;
 }
 
 /*
  variable type hint
 */
-ul.variableType {
-  display: inline; 
-  margin: 0;
-  padding: 0;
-  padding-right: 0.5em;
+.variable .type {
+  font-style: italic;
 }
-ul.variableType li {
-  display: inline; 
-  font-style: italic;  
-}
-  
-/*
- class inheritance
-*/
-.classInheritance {
-  font-family: monospace;
-}
-.classInheritance .name {
-  font-weight: bold; 
-  padding-left: 1em;
-}
-.classInheritance ul {
-  list-style: none;
-  display: inline;  
-  margin: 0;
-  padding: 0.2em;
-}
-.classInheritance ul li {
-  list-style: none;
-  display: inline;  
-}
-.classInheritance ul.variableType {
-  padding: 0.2em;
-}
-.classInheritance ul.variableType li {
-  font-style: italic;  
+.variable .name {
+  font-weight: normal;
 }

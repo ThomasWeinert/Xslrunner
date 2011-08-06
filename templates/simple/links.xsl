@@ -11,6 +11,25 @@
 
 <xsl:param name="OUTPUT_EXTENSION">.html</xsl:param>
 
+<func:function name="cxr:filename-of-type">
+  <xsl:param name="type"/>
+  <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
+  <func:result>
+    <xsl:choose>
+      <xsl:when test="$CLASSES//pdox:class[concat('\', @full) = $type]">
+        <xsl:value-of select="cxr:filename-of-class(substring($type, 2), $path)"/>
+      </xsl:when>
+      <xsl:when test="$CLASSES//pdox:class[concat($namespace, '\', @name) = $type]">
+        <xsl:value-of select="cxr:filename-of-class($type, $path)"/>
+      </xsl:when>
+      <xsl:when test="(string($namespace) = '') and $CLASSES/pdox:class[@full = $type]">
+        <xsl:value-of select="cxr:filename-of-class($type, $path)"/>
+      </xsl:when>
+    </xsl:choose>
+  </func:result>
+</func:function>
+
 <func:function name="cxr:filename-of-class">
   <xsl:param name="class"/>
   <xsl:param name="path"></xsl:param>

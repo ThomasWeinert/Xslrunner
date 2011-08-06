@@ -7,23 +7,25 @@
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
   exclude-result-prefixes="#default pdox cxr">
 
+
 <!-- callback definitions -->
 <xsl:import href="library/library.xsl"/>
 
 <!-- default templates to use and maybe overload -->
 <xsl:import href="html.xsl"/>
+<xsl:import href="navigation.xsl"/>
+
+<xsl:import href="links.xsl"/>
 
 <xsl:import href="class.xsl"/>
 <xsl:import href="classes.xsl"/>
-<xsl:import href="links.xsl"/>
-<xsl:import href="navigation.xsl"/>
 
 <xsl:output
   method="xml"
   encoding="utf-8"
   standalone="yes"
   indent="yes"
-  omit-xml-declaration="no" />
+  omit-xml-declaration="no"/>
 
 <!-- define data variables -->
 <xsl:variable name="CLASSES" select="document('source://classes.xml')/pdox:classes"/>
