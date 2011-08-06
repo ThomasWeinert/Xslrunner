@@ -21,9 +21,9 @@
         <li class="keyword">extends</li>
         <li class="type">
           <xsl:call-template name="variable-type">
-            <xsl:with-param name="type" select="$class/pdox:extends/@class"/>
-            <xsl:with-param name="path" select="$path"/>
-            <xsl:with-param name="namespace" select="$namespace"/>
+            <xsl:with-param name="type" select="string($class/pdox:extends/@full)"/>
+            <xsl:with-param name="path" select="string($path)"/>
+            <xsl:with-param name="namespace" select="string($namespace)"/>
           </xsl:call-template>
         </li>
       </ul>
@@ -37,12 +37,34 @@
           </xsl:if>
           <li class="type">
             <xsl:call-template name="variable-type">
-              <xsl:with-param name="type" select="@interface"/>
-              <xsl:with-param name="path" select="$path"/>
-              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="type" select="string(@full)"/>
+              <xsl:with-param name="path" select="string($path)"/>
+              <xsl:with-param name="namespace" select="string($namespace)"/>
             </xsl:call-template>
           </li>
         </xsl:for-each>
+      </ul>
+    </xsl:if>
+  </div>
+</xsl:template>
+
+<xsl:template name="interface-prototype">
+  <xsl:param name="interface" />
+  <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
+  <div class="prototype interface">
+    <span class="keyword">interface</span>
+    <span class="type"><xsl:value-of select="$interface/@name"/></span>
+    <xsl:if test="$interface/pdox:extends">
+      <ul class="inheritance extends">
+        <li class="keyword">extends</li>
+        <li class="type">
+          <xsl:call-template name="variable-type">
+            <xsl:with-param name="type" select="string($interface/pdox:extends/@full)"/>
+            <xsl:with-param name="path" select="string($path)"/>
+            <xsl:with-param name="namespace" select="string($namespace)"/>
+          </xsl:call-template>
+        </li>
       </ul>
     </xsl:if>
   </div>
@@ -71,7 +93,7 @@
       <ul class="properties">
         <li class="keyword"><xsl:value-of select="$visibility" /></li>
         <xsl:if test="$isAbstract">
-          <li>abstract</li>
+          <li class="keyword">abstract</li>
         </xsl:if>
         <xsl:if test="$isFinal">
           <li class="keyword">final</li>

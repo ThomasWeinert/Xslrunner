@@ -11,11 +11,11 @@
 
 <xsl:import href="prototype.xsl"/>
 
-<xsl:template name="class-index">
-  <xsl:param name="classIndex" />
-  <xsl:variable name="consoleOutput" select="cxr:console-write('Generating class index')"/>
+<xsl:template name="interface-index">
+  <xsl:param name="interfaceIndex" />
+  <xsl:variable name="consoleOutput" select="cxr:console-write('Generating interface index')"/>
   <exsl:document
-    href="target://classes.html"
+    href="target://interfaces.html"
     method="xml"
     encoding="utf-8"
     standalone="yes"
@@ -25,18 +25,18 @@
     omit-xml-declaration="yes">
     <html>
       <xsl:call-template name="html-head">
-        <xsl:with-param name="title">Class Index</xsl:with-param>
+        <xsl:with-param name="title">Interface Index</xsl:with-param>
       </xsl:call-template>
       <body>
         <xsl:call-template name="page-header"/>
         <div class="content">
-          <xsl:call-template name="class-list">
-            <xsl:with-param name="classes" select="$classIndex/pdox:class"/>
+          <xsl:call-template name="interface-list">
+            <xsl:with-param name="interfaces" select="$interfaceIndex/pdox:interface"/>
           </xsl:call-template>
-          <xsl:for-each select="$classIndex/pdox:namespace">
+          <xsl:for-each select="$interfaceIndex/pdox:namespace">
             <xsl:sort select="@name"/>
-            <xsl:call-template name="class-list">
-              <xsl:with-param name="classes" select="pdox:class"/>
+            <xsl:call-template name="interface-list">
+              <xsl:with-param name="interfaces" select="pdox:interface"/>
               <xsl:with-param name="namespace" select="@name"/>
             </xsl:call-template>
           </xsl:for-each>
@@ -47,30 +47,30 @@
   </exsl:document>
 </xsl:template>
 
-<xsl:template name="class-list">
-  <xsl:param name="classes"/>
+<xsl:template name="interface-list">
+  <xsl:param name="interfaces"/>
   <xsl:param name="namespace"></xsl:param>
   <xsl:if test="$namespace != ''">
     <h2 id="ns/{translate($namespace, '\', '/')}"><xsl:value-of select="$namespace" /></h2>
   </xsl:if>
-  <xsl:if test="count($classes) &gt; 0">
+  <xsl:if test="count($interfaces) &gt; 0">
     <ul>
-      <xsl:for-each select="$classes">
+      <xsl:for-each select="$interfaces">
         <xsl:sort select="@name"/>
-        <li><a href="{cxr:filename-of-class(./@full)}"><xsl:value-of select="@name" /></a></li>
+        <li><a href="{cxr:filename-of-interface(./@full)}"><xsl:value-of select="@name" /></a></li>
       </xsl:for-each>
     </ul>
   </xsl:if>
 </xsl:template>
 
-<xsl:template name="file-class">
+<xsl:template name="file-interface">
   <xsl:param name="fileName" />
-  <xsl:param name="className" />
+  <xsl:param name="interfaceName" />
   <xsl:variable name="file" select="cxr:load-document($fileName)/pdox:file"/>
-  <xsl:variable name="class" select="$file//pdox:class[@full = $className]"/>
-  <xsl:variable name="target" select="concat('target://', cxr:filename-of-class($class/@full))"/>
-  <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($class/@full, '\'))"/>
-  <xsl:variable name="namespace" select="$class/parent::pdox:namespace/@name"/>
+  <xsl:variable name="interface" select="$file//pdox:interface[@full = $interfaceName]"/>
+  <xsl:variable name="target" select="concat('target://', cxr:filename-of-interface($interface/@full))"/>
+  <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($interface/@full, '\'))"/>
+  <xsl:variable name="namespace" select="$interface/parent::pdox:namespace/@name"/>
   <exsl:document
     href="{$target}"
     method="xml"
@@ -81,38 +81,38 @@
     omit-xml-declaration="yes">
     <html>
       <xsl:call-template name="html-head">
-        <xsl:with-param name="title" select="$class/@full"/>
+        <xsl:with-param name="title" select="$interface/@full"/>
         <xsl:with-param name="path" select="$path"/>
       </xsl:call-template>
       <body>
         <xsl:call-template name="page-header"/>
         <div class="navigation">
           <xsl:call-template name="navigation">
-            <xsl:with-param name="selected" select="$class/@full"/>
+            <xsl:with-param name="selected" select="$interface/@full"/>
             <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
         </div>
         <div class="content">
-          <h2 class="className">
+          <h2 class="interfaceName">
             <xsl:call-template name="namespace-ariadne">
-              <xsl:with-param name="namespace" select="$class/@namespace"/>
+              <xsl:with-param name="namespace" select="$interface/@namespace"/>
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
-            <xsl:if test="string($class/@namespace) != ''">
+            <xsl:if test="string($interface/@namespace) != ''">
               <xsl:text>\</xsl:text>
             </xsl:if>
             <xsl:value-of select="@name"/>
           </h2>
-          <xsl:call-template name="class-prototype">
-            <xsl:with-param name="class" select="$class"/>
-            <xsl:with-param name="namespace" select="$class/@namespace"/>
+          <xsl:call-template name="interface-prototype">
+            <xsl:with-param name="interface" select="$interface"/>
+            <xsl:with-param name="namespace" select="$interface/@namespace"/>
             <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
           <p>
-            <xsl:value-of select="$class/pdox:docblock/pdox:description/@compact"/>
+            <xsl:value-of select="$interface/pdox:docblock/pdox:description/@compact"/>
           </p>
-          <xsl:call-template name="file-class-methods">
-            <xsl:with-param name="methods" select="$class/pdox:method"/>
+          <xsl:call-template name="file-interface-methods">
+            <xsl:with-param name="methods" select="$interface/pdox:method"/>
             <xsl:with-param name="fileName" select="$fileName"/>
             <xsl:with-param name="namespace" select="$namespace"/>
             <xsl:with-param name="path" select="$path"/>
@@ -124,7 +124,7 @@
   </exsl:document>
 </xsl:template>
 
-<xsl:template name="file-class-methods">
+<xsl:template name="file-interface-methods">
   <xsl:param name="methods"/>
   <xsl:param name="fileName"/>
   <xsl:param name="path"></xsl:param>

@@ -17,8 +17,8 @@
 
 <xsl:import href="links.xsl"/>
 
-<xsl:import href="class.xsl"/>
 <xsl:import href="classes.xsl"/>
+<xsl:import href="interfaces.xsl"/>
 
 <xsl:output
   method="xml"
@@ -29,6 +29,7 @@
 
 <!-- define data variables -->
 <xsl:variable name="CLASSES" select="document('source://classes.xml')/pdox:classes"/>
+<xsl:variable name="INTERFACES" select="document('source://interfaces.xml')/pdox:interfaces"/>
 <xsl:variable name="NAMESPACES" select="document('source://namespaces.xml')/pdox:namespaces/pdox:namespace"/>
 
 <xsl:template match="/">
@@ -39,6 +40,12 @@
     </xsl:call-template>
     <xsl:call-template name="classes">
       <xsl:with-param name="classIndex" select="$CLASSES"/>
+    </xsl:call-template>
+    <xsl:call-template name="interface-index">
+      <xsl:with-param name="interfaceIndex" select="$INTERFACES"/>
+    </xsl:call-template>
+    <xsl:call-template name="interfaces">
+      <xsl:with-param name="interfaceIndex" select="$INTERFACES"/>
     </xsl:call-template>
   </result>
 </xsl:template>
@@ -53,6 +60,21 @@
     <xsl:call-template name="file-class">
       <xsl:with-param name="fileName" select="$fileName"/>
       <xsl:with-param name="className" select="@full"/>
+    </xsl:call-template>
+  </xsl:for-each>
+  <xsl:variable name="consoleOutputDone" select="cxr:console-write('&#10;')"/>
+</xsl:template>
+
+<xsl:template name="interfaces">
+  <xsl:param name="interfaceIndex" />
+  <xsl:variable name="interfaceCount" select="count($interfaceIndex//pdox:interface)" />
+  <xsl:variable name="consoleOutputStart" select="cxr:console-write('Generating interface files')"/>
+  <xsl:for-each select="$interfaceIndex//pdox:interface">
+    <xsl:variable name="fileName" select="concat('source://', @xml)"/>
+    <xsl:variable name="consoleProgress" select="cxr:console-progress(position() = 1, $interfaceCount)"/>
+    <xsl:call-template name="file-interface">
+      <xsl:with-param name="fileName" select="$fileName"/>
+      <xsl:with-param name="interfaceName" select="@full"/>
     </xsl:call-template>
   </xsl:for-each>
   <xsl:variable name="consoleOutputDone" select="cxr:console-write('&#10;')"/>

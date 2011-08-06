@@ -65,7 +65,8 @@ div.navigation ul li a {
   display: inline;
 }
 .prototype ul.inheritance {
-  margin-left: 0.5em;
+  margin-left: 2em;
+  display: block;
 }
 .prototype ul.types {
   margin-right: 0.5em;

@@ -13,6 +13,11 @@
     <li>
       <a href="{$path}classes{$OUTPUT_EXTENSION}">Classes</a>
     </li>
+    <xsl:if test="count($INTERFACES//pdox:interface) &gt; 0"> 
+      <li>
+        <a href="{$path}interfaces{$OUTPUT_EXTENSION}">Interfaces</a>
+      </li>
+    </xsl:if>
   </ul>
 </xsl:template>
 
