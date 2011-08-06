@@ -24,14 +24,14 @@ class TypeString implements Runner\Callback  {
   /**
   * Create a new DOMDocument, load the given xml file and return the document.
   *
-  * @param array $arguments
+  * @param string $typeString
   * @return DOMDocument
   */
-  public function execute(array $arguments) {
+  public function __invoke($typeString) {
     $dom = new \DOMDocument();
     $dom->appendChild($root = $dom->createElement('variable-type'));
     $matches = array();
-    if ($matches = preg_split($this->_splitter, $arguments[0], -1, PREG_SPLIT_DELIM_CAPTURE)) {
+    if ($matches = preg_split($this->_splitter, $typeString, -1, PREG_SPLIT_DELIM_CAPTURE)) {
       foreach ($matches as $match) {
         if (preg_match($this->_splitter, $match)) {
           $element = $dom->createElement('text');

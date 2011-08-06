@@ -9,12 +9,12 @@ include_once(__DIR__.'/../TestCase.php');
 class TypeStringTest extends Runner\TestCase {
 
   /**
-  * @covers \Carica\Xsl\Runner\Callback\LoadDocument::execute
+  * @covers \Carica\Xsl\Runner\Callback\LoadDocument::__invoke
   * @dataProvider provideStringAndXml
   */
-  public function testExecute($typeString, $expectedXml) {
+  public function testInvoke($typeString, $expectedXml) {
     $callback = new TypeString();
-    $doc = $callback->execute(array($typeString));
+    $doc = $callback($typeString);
     $this->assertEquals(
       $expectedXml,
       $doc->saveXml($doc->documentElement)

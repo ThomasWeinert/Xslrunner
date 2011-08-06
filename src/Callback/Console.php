@@ -1,7 +1,6 @@
 <?php
 /**
-* Xslt Callback object. This output a dot, the dots are counted and a number and a linebreak are
-* added regulary.
+* Xslt Callback object. Just output the given string. This is used to show progress from xslt.
 *
 * @license http://www.opensource.org/licenses/mit-license.php The MIT License
 * @copyright Copyright (c) 2011 Thomas Weinert
@@ -18,7 +17,7 @@ use \Carica\Xsl\Runner as Runner;
 *
 * @package XslRunner
 */
-class ConsoleProgress implements Runner\Callback  {
+class Console implements Runner\Callback  {
 
   private static $_dotCounter = 0;
 
@@ -33,12 +32,12 @@ class ConsoleProgress implements Runner\Callback  {
   /**
   * Output given arguments
   *
-  * @param array $arguments
+  * @param boolean $reset
+  * @param integer $maximum
   */
-  public function execute(array $arguments) {
-    $reset = isset($arguments[0]) ? (boolean)$arguments[0] : FALSE;
+  public function progress($reset = FALSE, $maximum = 0) {
     if ($reset) {
-      self::$_maximum = isset($arguments[1]) ? (int)$arguments[1] : 0;
+      self::$_maximum = $maximum;
       self::$_dotCounter = 0;
       self::$_lineCounter = 0;
       echo "\n";
@@ -60,6 +59,18 @@ class ConsoleProgress implements Runner\Callback  {
         $positionString .= '/'.(int)self::$_maximum;
       }
       printf(self::$_endPattern, $positionString);
+    }
+  }
+
+  /**
+  * Output given arguments
+  *
+  * @param array $arguments
+  */
+  public function writeLine($message, $linebreak = TRUE) {
+    echo $message;
+    if ($linebreak) {
+      echo "\n";
     }
   }
 }

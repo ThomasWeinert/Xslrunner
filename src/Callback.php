@@ -18,13 +18,4 @@ namespace Carica\Xsl\Runner;
 * @package XslRunner
 */
 interface Callback {
-
-  /**
-  * Execute is called from the generic php callback function. The $arguments array contains all
-  * parameters of the call.
-  *
-  * @param array $arguments
-  * @return scalar|DOMNode
-  */
-  function execute(array $arguments);
 }

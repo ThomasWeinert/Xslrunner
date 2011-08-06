@@ -22,12 +22,12 @@ class LoadDocument implements Runner\Callback  {
   /**
   * Create a new DOMDocument, load the given xml file and return the document.
   *
-  * @param array $arguments
+  * @param string $fileName
   * @return DOMDocument
   */
-  public function execute(array $arguments) {
+  public function __invoke($fileName) {
     $dom = new \DOMDocument();
-    $dom->load($arguments[0]);
+    $dom->load($fileName);
     return $dom;
   }
 }

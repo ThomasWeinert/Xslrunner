@@ -12,9 +12,10 @@
 <!--
   Output something to the console.
 -->
-<func:function name="cxr:console-echo">
+<func:function name="cxr:console-write">
   <xsl:param name="string"/>
-  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'ConsoleEcho', $string)"/>
+  <xsl:param name="linebreak" select="true()"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'Console::writeLine', $string, $linebreak)"/>
 </func:function>
 
 <!--
@@ -23,7 +24,7 @@
 <func:function name="cxr:console-progress">
   <xsl:param name="reset"/>
   <xsl:param name="maximum"/>
-  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'ConsoleProgress', $reset, $maximum)"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'Console::progress', $reset, $maximum)"/>
 </func:function>
 
 <!--
