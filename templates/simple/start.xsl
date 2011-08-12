@@ -17,6 +17,7 @@
 
 <xsl:import href="links.xsl"/>
 
+<xsl:import href="index.xsl"/>
 <xsl:import href="classes.xsl"/>
 <xsl:import href="interfaces.xsl"/>
 
@@ -35,6 +36,9 @@
 <xsl:template match="/">
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating output from phpDox xml')"/>
   <result>
+    <xsl:call-template name="file-index">
+      <xsl:with-param name="index" select="index"/>
+    </xsl:call-template>
     <xsl:call-template name="class-index">
       <xsl:with-param name="classIndex" select="$CLASSES"/>
     </xsl:call-template>

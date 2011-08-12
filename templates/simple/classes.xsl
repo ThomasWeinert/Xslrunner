@@ -29,6 +29,9 @@
       </xsl:call-template>
       <body>
         <xsl:call-template name="page-header"/>
+        <div class="navigation">
+          <xsl:call-template name="navigation"/>
+        </div>
         <div class="content">
           <xsl:call-template name="class-list">
             <xsl:with-param name="classes" select="$classIndex/pdox:class"/>
