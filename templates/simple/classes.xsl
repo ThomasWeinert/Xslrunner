@@ -107,17 +107,39 @@
             </xsl:if>
             <xsl:value-of select="@name"/>
           </h2>
-          <xsl:call-template name="file-class-inheritance">
-            <xsl:with-param
-               name="parents"
-               select="cxr:inheritance-superclasses($index, string($class/@full))//pdox:class"/>
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
           <xsl:call-template name="class-prototype">
             <xsl:with-param name="class" select="$class"/>
             <xsl:with-param name="namespace" select="$class/@namespace"/>
             <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
+          <xsl:variable
+            name="superClasses"
+            select="cxr:inheritance-superclasses($index, string($class/@full))//pdox:class"/>
+          <xsl:if test="count($superClasses) &gt; 1">
+            <h3>Inheritance</h3>
+            <xsl:call-template name="file-class-inheritance">
+              <xsl:with-param
+                 name="parents"
+                 select="$superClasses"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+          </xsl:if>
+          <xsl:variable
+             name="childClasses"
+            select="cxr:inheritance-childclasses($index, string($class/@full))//pdox:class"/>
+          <xsl:if test="count($childClasses) &gt; 0">
+            <h3>Extended by</h3>
+            <ul class="extendedBy">
+              <xsl:for-each select="$childClasses">
+                <li>
+                  <xsl:call-template name="variable-type">
+                    <xsl:with-param name="type" select="string(@full)"/>
+                    <xsl:with-param name="path" select="string($path)"/>
+                  </xsl:call-template>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </xsl:if>
           <p>
             <xsl:value-of select="$class/pdox:docblock/pdox:description/@compact"/>
           </p>

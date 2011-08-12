@@ -62,10 +62,10 @@
   </xsl:variable>
   <pdox:class full="{$class/@full}" package="{$package}">
     <xsl:for-each select="$class/pdox:extends">
-      <pdox:extends full="{$class/pdox:extends/@full}"/>
+      <pdox:extends full="{@full}"/>
     </xsl:for-each>
     <xsl:for-each select="$class/pdox:implements">
-      <pdox:implements full="{$class/pdox:implements/@full}"/>
+      <pdox:implements full="{@full}"/>
     </xsl:for-each>
   </pdox:class>
 </xsl:template>
@@ -94,7 +94,7 @@
   </xsl:variable>
   <pdox:interface full="{$interface/@full}" package="{$package}">
     <xsl:for-each select="$interface/pdox:extends">
-      <pdox:extends full="{$interface/pdox:extends/@full}"/>
+      <pdox:extends full="{@full}"/>
     </xsl:for-each>
   </pdox:interface>
 </xsl:template>
@@ -125,5 +125,18 @@
   </xsl:if>
   <pdox:class full="{$className}"/>
 </xsl:template>
+
+<func:function name="cxr:inheritance-childclasses">
+  <xsl:param name="index"/>
+  <xsl:param name="className"/>
+  <xsl:variable name="result">
+    <pdox:children>
+      <xsl:for-each select="$index//pdox:class[pdox:extends[@full = $className]]">
+        <pdox:class full="{@full}"/>
+      </xsl:for-each>
+    </pdox:children>
+  </xsl:variable>
+  <func:result select="exsl:node-set($result)"/>
+</func:function>
 
 </xsl:stylesheet>
