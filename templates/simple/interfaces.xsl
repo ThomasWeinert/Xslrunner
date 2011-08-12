@@ -95,10 +95,10 @@
         <div class="content">
           <h2 class="interfaceName">
             <xsl:call-template name="namespace-ariadne">
-              <xsl:with-param name="namespace" select="$interface/@namespace"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
-            <xsl:if test="string($interface/@namespace) != ''">
+            <xsl:if test="string($namespace) != ''">
               <xsl:text>\</xsl:text>
             </xsl:if>
             <xsl:value-of select="@name"/>
