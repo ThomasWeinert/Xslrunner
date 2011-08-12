@@ -56,6 +56,7 @@
       <xsl:with-param name="interfaceIndex" select="$INTERFACES"/>
     </xsl:call-template>
     <xsl:call-template name="interfaces">
+      <xsl:with-param name="index" select="$index"/>
       <xsl:with-param name="interfaceIndex" select="$INTERFACES"/>
     </xsl:call-template>
   </result>
@@ -79,6 +80,7 @@
 </xsl:template>
 
 <xsl:template name="interfaces">
+  <xsl:param name="index" />
   <xsl:param name="interfaceIndex" />
   <xsl:variable name="interfaceCount" select="count($interfaceIndex//pdox:interface)" />
   <xsl:variable name="consoleOutputStart" select="cxr:console-write('Generating interface files')"/>
@@ -86,6 +88,7 @@
     <xsl:variable name="fileName" select="concat('source://', @xml)"/>
     <xsl:variable name="consoleProgress" select="cxr:console-progress(position() = 1, $interfaceCount)"/>
     <xsl:call-template name="file-interface">
+      <xsl:with-param name="index" select="$index"/>
       <xsl:with-param name="fileName" select="$fileName"/>
       <xsl:with-param name="interfaceName" select="@full"/>
     </xsl:call-template>

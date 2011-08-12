@@ -125,12 +125,12 @@
             </xsl:call-template>
           </xsl:if>
           <xsl:variable
-             name="childClasses"
-            select="cxr:inheritance-childclasses($index, string($class/@full))//pdox:class"/>
-          <xsl:if test="count($childClasses) &gt; 0">
+             name="children"
+            select="cxr:inheritance-children-class($index, string($class/@full))//pdox:class"/>
+          <xsl:if test="count($children) &gt; 0">
             <h3>Extended by</h3>
             <ul class="extendedBy">
-              <xsl:for-each select="$childClasses">
+              <xsl:for-each select="$children">
                 <li>
                   <xsl:call-template name="variable-type">
                     <xsl:with-param name="type" select="string(@full)"/>

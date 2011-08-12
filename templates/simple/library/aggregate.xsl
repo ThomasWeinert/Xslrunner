@@ -29,7 +29,7 @@
         <xsl:variable name="consoleProgressStep" select="cxr:console-progress()"/>
         <xsl:call-template name="aggregate-interface">
           <xsl:with-param name="fileName" select="concat('source://', @xml)"/>
-          <xsl:with-param name="interfacesName" select="@full"/>
+          <xsl:with-param name="interfaceName" select="@full"/>
         </xsl:call-template>
       </xsl:for-each>
     </pdox:structure>
@@ -126,15 +126,41 @@
   <pdox:class full="{$className}"/>
 </xsl:template>
 
-<func:function name="cxr:inheritance-childclasses">
+<func:function name="cxr:inheritance-children-class">
   <xsl:param name="index"/>
-  <xsl:param name="className"/>
+  <xsl:param name="name"/>
   <xsl:variable name="result">
-    <pdox:children>
-      <xsl:for-each select="$index//pdox:class[pdox:extends[@full = $className]]">
+    <pdox:extended-by>
+      <xsl:for-each select="$index//pdox:class[pdox:extends[@full = $name]]">
         <pdox:class full="{@full}"/>
       </xsl:for-each>
-    </pdox:children>
+    </pdox:extended-by>
+  </xsl:variable>
+  <func:result select="exsl:node-set($result)"/>
+</func:function>
+
+<func:function name="cxr:inheritance-children-interface">
+  <xsl:param name="index"/>
+  <xsl:param name="name"/>
+  <xsl:variable name="result">
+    <pdox:extended-by>
+      <xsl:for-each select="$index//pdox:interface[pdox:extends[@full = $name]]">
+        <pdox:interface full="{@full}"/>
+      </xsl:for-each>
+    </pdox:extended-by>
+  </xsl:variable>
+  <func:result select="exsl:node-set($result)"/>
+</func:function>
+
+<func:function name="cxr:inheritance-implementations">
+  <xsl:param name="index"/>
+  <xsl:param name="name"/>
+  <xsl:variable name="result">
+    <pdox:implemented-by>
+      <xsl:for-each select="$index//pdox:class[pdox:implements[@full = $name]]">
+        <pdox:interface full="{@full}"/>
+      </xsl:for-each>
+    </pdox:implemented-by>
   </xsl:variable>
   <func:result select="exsl:node-set($result)"/>
 </func:function>

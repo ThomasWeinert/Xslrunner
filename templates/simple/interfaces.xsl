@@ -67,6 +67,7 @@
 </xsl:template>
 
 <xsl:template name="file-interface">
+  <xsl:param name="index" />
   <xsl:param name="fileName" />
   <xsl:param name="interfaceName" />
   <xsl:variable name="file" select="cxr:load-document($fileName)/pdox:file"/>
@@ -111,6 +112,38 @@
             <xsl:with-param name="namespace" select="$interface/@namespace"/>
             <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
+          <xsl:variable
+            name="children"
+            select="cxr:inheritance-children-interface($index, string($interface/@full))//pdox:interface"/>
+          <xsl:if test="count($children) &gt; 0">
+            <h3>Extended by</h3>
+            <ul class="extendedBy">
+              <xsl:for-each select="$children">
+                <li>
+                  <xsl:call-template name="variable-type">
+                    <xsl:with-param name="type" select="string(@full)"/>
+                    <xsl:with-param name="path" select="string($path)"/>
+                  </xsl:call-template>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </xsl:if>
+          <xsl:variable
+            name="implementations"
+            select="cxr:inheritance-implementations($index, string($interface/@full))//pdox:interface"/>
+          <xsl:if test="count($implementations) &gt; 0">
+            <h3>Implemented by</h3>
+            <ul class="implementedBy">
+              <xsl:for-each select="$implementations">
+                <li>
+                  <xsl:call-template name="variable-type">
+                    <xsl:with-param name="type" select="string(@full)"/>
+                    <xsl:with-param name="path" select="string($path)"/>
+                  </xsl:call-template>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </xsl:if>
           <p>
             <xsl:value-of select="$interface/pdox:docblock/pdox:description/@compact"/>
           </p>
