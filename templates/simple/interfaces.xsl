@@ -15,7 +15,7 @@
   <xsl:param name="interfaceIndex" />
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating interface index')"/>
   <exsl:document
-    href="target://interfaces.html"
+    href="target://interfaces{$OUTPUT_EXTENSION}"
     method="xml"
     encoding="utf-8"
     standalone="yes"

@@ -48,6 +48,13 @@ div.navigation ul li a {
   text-decoration: none;
 }
 
+ul.tree {
+  list-style-type: circle;
+}
+ul.tree ul {
+  list-style-type: circle;
+}
+
 /*
  function prototype
 */

@@ -15,7 +15,7 @@
   <xsl:param name="classIndex" />
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating class index')"/>
   <exsl:document
-    href="target://classes.html"
+    href="target://classes{$OUTPUT_EXTENSION}"
     method="xml"
     encoding="utf-8"
     standalone="yes"
@@ -67,6 +67,7 @@
 </xsl:template>
 
 <xsl:template name="file-class">
+  <xsl:param name="index" />
   <xsl:param name="fileName" />
   <xsl:param name="className" />
   <xsl:variable name="file" select="cxr:load-document($fileName)/pdox:file"/>
@@ -106,6 +107,12 @@
             </xsl:if>
             <xsl:value-of select="@name"/>
           </h2>
+          <xsl:call-template name="file-class-inheritance">
+            <xsl:with-param
+               name="parents"
+               select="cxr:inheritance-superclasses($index, string($class/@full))//pdox:class"/>
+            <xsl:with-param name="path" select="$path"/>
+          </xsl:call-template>
           <xsl:call-template name="class-prototype">
             <xsl:with-param name="class" select="$class"/>
             <xsl:with-param name="namespace" select="$class/@namespace"/>
@@ -145,6 +152,30 @@
       </xsl:call-template>
     </div>
   </xsl:for-each>
+</xsl:template>
+
+<xsl:template name="file-class-inheritance">
+  <xsl:param name="parents"/>
+  <xsl:param name="path"/>
+  <xsl:param name="offset" select="1"/>
+  <xsl:if test="count($parents) &gt; ($offset - 1) and count($parents) &gt; 1">
+    <ul>
+      <xsl:if test="$offset = 1">
+        <xsl:attribute name="class">tree inheritance</xsl:attribute>
+      </xsl:if>
+      <li>
+        <xsl:call-template name="variable-type">
+          <xsl:with-param name="type" select="string($parents[position() = $offset]/@full)"/>
+          <xsl:with-param name="path" select="string($path)"/>
+        </xsl:call-template>
+        <xsl:call-template name="file-class-inheritance">
+          <xsl:with-param name="parents" select="$parents"/>
+          <xsl:with-param name="path" select="$path"/>
+          <xsl:with-param name="offset" select="$offset + 1"/>
+        </xsl:call-template>
+      </li>
+    </ul>
+  </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

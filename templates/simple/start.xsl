@@ -3,8 +3,10 @@
   version="1.0"
   xmlns="http://www.w3.org/1999/xhtml/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:exsl="http://exslt.org/common"
   xmlns:pdox="http://xml.phpdox.de/src#"
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
+  extension-element-prefixes="exsl"
   exclude-result-prefixes="#default pdox cxr">
 
 
@@ -36,13 +38,18 @@
 <xsl:template match="/">
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating output from phpDox xml')"/>
   <result>
+    <xsl:variable name="index" select="cxr:aggregate($CLASSES, $INTERFACES)"/>
+    <xsl:call-template name="dump-structure">
+      <xsl:with-param name="index" select="$index"/>
+    </xsl:call-template>
     <xsl:call-template name="file-index">
-      <xsl:with-param name="index" select="index"/>
+      <xsl:with-param name="index" select="$index"/>
     </xsl:call-template>
     <xsl:call-template name="class-index">
       <xsl:with-param name="classIndex" select="$CLASSES"/>
     </xsl:call-template>
     <xsl:call-template name="classes">
+      <xsl:with-param name="index" select="$index"/>
       <xsl:with-param name="classIndex" select="$CLASSES"/>
     </xsl:call-template>
     <xsl:call-template name="interface-index">
@@ -55,6 +62,7 @@
 </xsl:template>
 
 <xsl:template name="classes">
+  <xsl:param name="index" />
   <xsl:param name="classIndex" />
   <xsl:variable name="classCount" select="count($classIndex//pdox:class)" />
   <xsl:variable name="consoleOutputStart" select="cxr:console-write('Generating class files')"/>
@@ -62,6 +70,7 @@
     <xsl:variable name="fileName" select="concat('source://', @xml)"/>
     <xsl:variable name="consoleProgress" select="cxr:console-progress(position() = 1, $classCount)"/>
     <xsl:call-template name="file-class">
+      <xsl:with-param name="index" select="$index"/>
       <xsl:with-param name="fileName" select="$fileName"/>
       <xsl:with-param name="className" select="@full"/>
     </xsl:call-template>
@@ -82,6 +91,18 @@
     </xsl:call-template>
   </xsl:for-each>
   <xsl:variable name="consoleOutputDone" select="cxr:console-write('&#10;')"/>
+</xsl:template>
+
+<xsl:template name="dump-structure">
+  <xsl:param name="index" />
+  <exsl:document
+    href="target://dump-structure.xml"
+    method="xml"
+    encoding="utf-8"
+    standalone="yes"
+    indent="yes">
+    <xsl:copy-of select="$index"/>
+  </exsl:document>
 </xsl:template>
 
 </xsl:stylesheet>

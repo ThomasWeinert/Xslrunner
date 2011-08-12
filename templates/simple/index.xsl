@@ -15,7 +15,7 @@
   <xsl:param name="index" />
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating documentation index')"/>
   <exsl:document
-    href="target://index.html"
+    href="target://index{$OUTPUT_EXTENSION}"
     method="xml"
     encoding="utf-8"
     standalone="yes"
@@ -29,6 +29,9 @@
       </xsl:call-template>
       <body>
         <xsl:call-template name="page-header"/>
+        <div class="navigation">
+          <xsl:call-template name="navigation"/>
+        </div>
         <div class="content">
           <xsl:text> </xsl:text>
         </div>
