@@ -12,6 +12,7 @@
 <xsl:import href="prototype.xsl"/>
 
 <xsl:template name="interface-index">
+  <xsl:param name="index" />
   <xsl:param name="interfaceIndex" />
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating interface index')"/>
   <exsl:document

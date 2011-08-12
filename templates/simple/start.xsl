@@ -46,6 +46,7 @@
       <xsl:with-param name="index" select="$index"/>
     </xsl:call-template>
     <xsl:call-template name="class-index">
+      <xsl:with-param name="index" select="$index"/>
       <xsl:with-param name="classIndex" select="$CLASSES"/>
     </xsl:call-template>
     <xsl:call-template name="classes">
@@ -53,6 +54,7 @@
       <xsl:with-param name="classIndex" select="$CLASSES"/>
     </xsl:call-template>
     <xsl:call-template name="interface-index">
+      <xsl:with-param name="index" select="$index"/>
       <xsl:with-param name="interfaceIndex" select="$INTERFACES"/>
     </xsl:call-template>
     <xsl:call-template name="interfaces">

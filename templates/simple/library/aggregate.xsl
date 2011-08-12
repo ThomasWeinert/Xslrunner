@@ -165,4 +165,25 @@
   <func:result select="exsl:node-set($result)"/>
 </func:function>
 
+<func:function name="cxr:packages">
+  <xsl:param name="index"/>
+  <xsl:variable name="all">
+    <xsl:for-each select="$index//pdox:class|$index//pdox:interface">
+      <xsl:sort select="@package"/>
+      <pdox:package full="{@package}"/>
+    </xsl:for-each>
+  </xsl:variable>
+  <xsl:variable name="list" select="exsl:node-set($all)/*"/>
+  <xsl:variable name="result">
+    <xsl:for-each select="$list">
+      <xsl:variable name="offset" select="position()"/>
+      <xsl:variable name="previous" select="$list[position() = $offset - 1]"/>
+      <xsl:if test="not($previous) or (./@full != $previous/@full)">
+        <pdox:package full="{@full}"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+  <func:result select="exsl:node-set($result)"/>
+</func:function>
+
 </xsl:stylesheet>

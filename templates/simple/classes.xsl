@@ -12,6 +12,7 @@
 <xsl:import href="prototype.xsl"/>
 
 <xsl:template name="class-index">
+  <xsl:param name="index" />
   <xsl:param name="classIndex" />
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating class index')"/>
   <exsl:document
