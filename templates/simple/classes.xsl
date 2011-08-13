@@ -11,10 +11,13 @@
 
 <xsl:import href="prototype.xsl"/>
 
+<xsl:param name="FORCE_USE_PACKAGES" select="false()"/>
+
 <xsl:template name="class-index">
   <xsl:param name="index" />
   <xsl:param name="classIndex" />
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating class index')"/>
+  <xsl:variable name="packages" select="cxr:aggregate-packages($index)/*"/>
   <exsl:document
     href="target://classes{$OUTPUT_EXTENSION}"
     method="xml"
@@ -34,16 +37,32 @@
           <xsl:call-template name="navigation"/>
         </div>
         <div class="content">
-          <xsl:call-template name="class-list">
-            <xsl:with-param name="classes" select="$classIndex/pdox:class"/>
-          </xsl:call-template>
-          <xsl:for-each select="$classIndex/pdox:namespace">
-            <xsl:sort select="@name"/>
-            <xsl:call-template name="class-list">
-              <xsl:with-param name="classes" select="pdox:class"/>
-              <xsl:with-param name="namespace" select="@name"/>
-            </xsl:call-template>
-          </xsl:for-each>
+          <xsl:choose>
+            <xsl:when test="$FORCE_USE_PACKAGES or count($classIndex/pdox:namespace) = 0">
+              <xsl:call-template name="class-list">
+                <xsl:with-param name="classes" select="$index//pdox:class[@package = '']"/>
+              </xsl:call-template>
+              <xsl:for-each select="$packages[@full != '']">
+                <xsl:variable name="packageName" select="@full"/>
+                <xsl:call-template name="class-list">
+                  <xsl:with-param name="classes" select="$index//pdox:class[@package = $packageName]"/>
+                  <xsl:with-param name="package" select="$packageName"/>
+                </xsl:call-template>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:call-template name="class-list">
+                <xsl:with-param name="classes" select="$classIndex/pdox:class"/>
+              </xsl:call-template>
+              <xsl:for-each select="$classIndex/pdox:namespace">
+                <xsl:sort select="@name"/>
+                <xsl:call-template name="class-list">
+                  <xsl:with-param name="classes" select="pdox:class"/>
+                  <xsl:with-param name="namespace" select="@name"/>
+                </xsl:call-template>
+              </xsl:for-each> 
+            </xsl:otherwise>
+          </xsl:choose>
         </div>
         <xsl:call-template name="page-footer"/>
       </body>
@@ -54,14 +73,27 @@
 <xsl:template name="class-list">
   <xsl:param name="classes"/>
   <xsl:param name="namespace"></xsl:param>
-  <xsl:if test="$namespace != ''">
-    <h2 id="ns/{translate($namespace, '\', '/')}"><xsl:value-of select="$namespace" /></h2>
-  </xsl:if>
+  <xsl:param name="package"></xsl:param>
   <xsl:if test="count($classes) &gt; 0">
+    <xsl:choose>
+      <xsl:when test="$namespace != ''">
+        <h2 id="ns/{translate($namespace, '\', '/')}"><xsl:value-of select="$namespace" /></h2>
+      </xsl:when>
+      <xsl:when test="$package != ''">
+        <h2 id="pkg/{translate($package, '\', '/')}"><xsl:value-of select="$package" /></h2>
+      </xsl:when>
+    </xsl:choose>
     <ul>
       <xsl:for-each select="$classes">
-        <xsl:sort select="@name"/>
-        <li><a href="{cxr:filename-of-class(./@full)}"><xsl:value-of select="@name" /></a></li>
+        <xsl:sort select="@full"/>
+        <li>
+          <a href="{cxr:filename-of-class(./@full)}">
+            <xsl:choose>
+              <xsl:when test="@name"><xsl:value-of select="@name" /></xsl:when>
+              <xsl:otherwise><xsl:value-of select="@full" /></xsl:otherwise>
+            </xsl:choose>
+          </a>
+        </li>
       </xsl:for-each>
     </ul>
   </xsl:if>

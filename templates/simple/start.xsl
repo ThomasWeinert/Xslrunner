@@ -29,6 +29,9 @@
   standalone="yes"
   indent="yes"
   omit-xml-declaration="no"/>
+  
+  
+<xsl:param name="FORCE_USE_PACKAGES" select="false()"/>
 
 <!-- define data variables -->
 <xsl:variable name="CLASSES" select="document('source://classes.xml')/pdox:classes"/>

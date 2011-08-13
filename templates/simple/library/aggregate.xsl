@@ -60,7 +60,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  <pdox:class full="{$class/@full}" package="{$package}">
+  <pdox:class file="{$fileName}" full="{$class/@full}" package="{$package}">
     <xsl:for-each select="$class/pdox:extends">
       <pdox:extends full="{@full}"/>
     </xsl:for-each>
@@ -165,7 +165,7 @@
   <func:result select="exsl:node-set($result)"/>
 </func:function>
 
-<func:function name="cxr:packages">
+<func:function name="cxr:aggregate-packages">
   <xsl:param name="index"/>
   <xsl:variable name="all">
     <xsl:for-each select="$index//pdox:class|$index//pdox:interface">

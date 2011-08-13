@@ -11,10 +11,13 @@
 
 <xsl:import href="prototype.xsl"/>
 
+<xsl:param name="FORCE_USE_PACKAGES" select="false()"/>
+
 <xsl:template name="interface-index">
   <xsl:param name="index" />
   <xsl:param name="interfaceIndex" />
   <xsl:variable name="consoleOutput" select="cxr:console-write('Generating interface index')"/>
+  <xsl:variable name="packages" select="cxr:aggregate-packages($index)/*"/>
   <exsl:document
     href="target://interfaces{$OUTPUT_EXTENSION}"
     method="xml"
@@ -34,16 +37,32 @@
           <xsl:call-template name="navigation"/>
         </div>
         <div class="content">
-          <xsl:call-template name="interface-list">
-            <xsl:with-param name="interfaces" select="$interfaceIndex/pdox:interface"/>
-          </xsl:call-template>
-          <xsl:for-each select="$interfaceIndex/pdox:namespace">
-            <xsl:sort select="@name"/>
-            <xsl:call-template name="interface-list">
-              <xsl:with-param name="interfaces" select="pdox:interface"/>
-              <xsl:with-param name="namespace" select="@name"/>
-            </xsl:call-template>
-          </xsl:for-each>
+          <xsl:choose>
+            <xsl:when test="$FORCE_USE_PACKAGES or count($interfaceIndex/pdox:namespace) = 0">
+              <xsl:call-template name="interface-list">
+                <xsl:with-param name="interfaces" select="$index//pdox:interface[@package = '']"/>
+              </xsl:call-template>
+              <xsl:for-each select="$packages[@full != '']">
+                <xsl:variable name="packageName" select="@full"/>
+                <xsl:call-template name="interface-list">
+                  <xsl:with-param name="interfaces" select="$index//pdox:interface[@package = $packageName]"/>
+                  <xsl:with-param name="package" select="$packageName"/>
+                </xsl:call-template>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:call-template name="interface-list">
+                <xsl:with-param name="interfaces" select="$interfaceIndex/pdox:interface"/>
+              </xsl:call-template>
+              <xsl:for-each select="$interfaceIndex/pdox:namespace">
+                <xsl:sort select="@name"/>
+                <xsl:call-template name="interface-list">
+                  <xsl:with-param name="interfaces" select="pdox:interface"/>
+                  <xsl:with-param name="namespace" select="@name"/>
+                </xsl:call-template>
+              </xsl:for-each> 
+            </xsl:otherwise>
+          </xsl:choose>
         </div>
         <xsl:call-template name="page-footer"/>
       </body>
@@ -54,14 +73,27 @@
 <xsl:template name="interface-list">
   <xsl:param name="interfaces"/>
   <xsl:param name="namespace"></xsl:param>
-  <xsl:if test="$namespace != ''">
-    <h2 id="ns/{translate($namespace, '\', '/')}"><xsl:value-of select="$namespace" /></h2>
-  </xsl:if>
+  <xsl:param name="package"></xsl:param>
   <xsl:if test="count($interfaces) &gt; 0">
+    <xsl:choose>
+      <xsl:when test="$namespace != ''">
+        <h2 id="ns/{translate($namespace, '\', '/')}"><xsl:value-of select="$namespace" /></h2>
+      </xsl:when>
+      <xsl:when test="$package != ''">
+        <h2 id="pkg/{translate($package, '\', '/')}"><xsl:value-of select="$package" /></h2>
+      </xsl:when>
+    </xsl:choose>
     <ul>
       <xsl:for-each select="$interfaces">
-        <xsl:sort select="@name"/>
-        <li><a href="{cxr:filename-of-interface(./@full)}"><xsl:value-of select="@name" /></a></li>
+        <xsl:sort select="@full"/>
+        <li>
+          <a href="{cxr:filename-of-class(./@full)}">
+            <xsl:choose>
+              <xsl:when test="@name"><xsl:value-of select="@name" /></xsl:when>
+              <xsl:otherwise><xsl:value-of select="@full" /></xsl:otherwise>
+            </xsl:choose>
+          </a>
+        </li>
       </xsl:for-each>
     </ul>
   </xsl:if>
