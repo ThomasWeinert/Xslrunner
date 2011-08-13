@@ -89,7 +89,7 @@
       <xsl:for-each select="$interfaces">
         <xsl:sort select="@full"/>
         <li>
-          <a href="{cxr:filename-of-class(./@full)}">
+          <a href="{cxr:filename-of-interface(./@full)}">
             <xsl:choose>
               <xsl:when test="@name"><xsl:value-of select="@name" /></xsl:when>
               <xsl:otherwise><xsl:value-of select="@full" /></xsl:otherwise>
