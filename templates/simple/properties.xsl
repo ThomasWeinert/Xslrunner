@@ -16,9 +16,33 @@
   <xsl:param name="namespace"></xsl:param>
   <xsl:if test="count($properties) &gt; 0">
     <h3>Properties</h3>
+    <xsl:call-template name="file-properties-group">
+      <xsl:with-param name="properties" select="$properties[@visibility = 'private']"/>
+      <xsl:with-param name="path" select="$path"/>
+      <xsl:with-param name="namespace" select="$namespace"/>
+    </xsl:call-template>
+    <xsl:call-template name="file-properties-group">
+      <xsl:with-param name="properties" select="$properties[@visibility = 'protected']"/>
+      <xsl:with-param name="path" select="$path"/>
+      <xsl:with-param name="namespace" select="$namespace"/>
+    </xsl:call-template>
+    <xsl:call-template name="file-properties-group">
+      <xsl:with-param name="properties" select="$properties[@visibility = 'public']"/>
+      <xsl:with-param name="path" select="$path"/>
+      <xsl:with-param name="namespace" select="$namespace"/>
+    </xsl:call-template>
+  </xsl:if>
+</xsl:template>
+
+<xsl:template name="file-properties-group">
+  <xsl:param name="properties"/>
+  <xsl:param name="fileName"/>
+  <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
+  <xsl:if test="count($properties) &gt; 0">
     <xsl:for-each select="$properties">
       <xsl:sort select="@name"/>
-      <div class="method">
+      <div class="property">
         <h4>$<xsl:value-of select="@name"/></h4>
         <xsl:call-template name="prototype-property">
           <xsl:with-param name="property" select="."/>
