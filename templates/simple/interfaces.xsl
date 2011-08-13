@@ -10,6 +10,7 @@
   exclude-result-prefixes="#default pdox cxr">
 
 <xsl:import href="prototype.xsl"/>
+<xsl:import href="methods.xsl"/>
 
 <xsl:param name="FORCE_USE_PACKAGES" select="false()"/>
 
@@ -180,7 +181,7 @@
           <p>
             <xsl:value-of select="$interface/pdox:docblock/pdox:description/@compact"/>
           </p>
-          <xsl:call-template name="file-interface-methods">
+          <xsl:call-template name="file-methods">
             <xsl:with-param name="methods" select="$interface/pdox:method"/>
             <xsl:with-param name="fileName" select="$fileName"/>
             <xsl:with-param name="namespace" select="$namespace"/>
@@ -191,26 +192,6 @@
       </body>
     </html>
   </exsl:document>
-</xsl:template>
-
-<xsl:template name="file-interface-methods">
-  <xsl:param name="methods"/>
-  <xsl:param name="fileName"/>
-  <xsl:param name="path"></xsl:param>
-  <xsl:param name="namespace"></xsl:param>
-  <xsl:for-each select="$methods">
-    <xsl:sort select="@name"/>
-    <div class="method">
-      <h3><xsl:value-of select="@name"/></h3>
-      <p><xsl:value-of select="pdox:docblock/pdox:description/@compact"/></p>
-      <xsl:call-template name="function-prototype">
-        <xsl:with-param name="function" select="."/>
-        <xsl:with-param name="file" select="$fileName"/>
-        <xsl:with-param name="path" select="$path"/>
-        <xsl:with-param name="namespace" select="$namespace"/>
-      </xsl:call-template>
-    </div>
-  </xsl:for-each>
 </xsl:template>
 
 </xsl:stylesheet>
