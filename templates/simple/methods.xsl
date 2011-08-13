@@ -34,4 +34,38 @@
   </xsl:if>
 </xsl:template>
 
+<xsl:template name="file-dynamic-methods">
+  <xsl:param name="methods"/>
+  <xsl:param name="fileName"/>
+  <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
+  <xsl:if test="count($methods) &gt; 0">
+    <h3>Dynamic Methods</h3>
+    <xsl:for-each select="$methods">
+      <xsl:sort select="substring-after(@value, ' ')"/>
+      <xsl:variable name="returnType" select="substring-before(@value, ' ')"/>
+      <xsl:variable name="returnStripped" select="substring-after(@value, $returnType)"/>
+      <xsl:variable name="name" select="normalize-space(substring-before($returnStripped, '('))"/>
+      <xsl:variable name="description" select="substring-after($returnStripped, ')')"/>
+      <div class="method">
+        <h4><xsl:value-of select="$name"/></h4>
+        <div class="prototype function">
+          <ul class="properties">
+            <li class="keyword">function</li>
+          </ul>
+          <xsl:call-template name="variable-type-list">
+            <xsl:with-param name="type" select="normalize-space($returnType)"/>
+            <xsl:with-param name="path" select="$path"/>
+            <xsl:with-param name="namespace" select="$namespace"/>
+          </xsl:call-template>
+          <span class="name"><xsl:value-of select="$name"/>()</span>
+        </div>
+        <xsl:if test="$description != ''">
+          <p class="descriptionShort"><xsl:value-of select="$description"/></p>
+        </xsl:if>
+      </div>
+    </xsl:for-each>
+  </xsl:if>
+</xsl:template>
+
 </xsl:stylesheet>

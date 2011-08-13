@@ -187,6 +187,12 @@
             <xsl:with-param name="namespace" select="$namespace"/>
             <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
+          <xsl:call-template name="file-dynamic-methods">
+            <xsl:with-param name="methods" select="$docblock/pdox:method"/>
+            <xsl:with-param name="fileName" select="$fileName"/>
+            <xsl:with-param name="namespace" select="$namespace"/>
+            <xsl:with-param name="path" select="$path"/>
+          </xsl:call-template>
           <xsl:call-template name="file-properties">
             <xsl:with-param name="properties" select="$class/pdox:member"/>
             <xsl:with-param name="fileName" select="$fileName"/>

@@ -100,6 +100,7 @@
   <xsl:if test="count($properties) &gt; 0">
     <h3>Dynamic properties</h3>
     <xsl:for-each select="$properties">
+      <xsl:sort select="substring-after(@value, '$')"/>
       <xsl:variable name="type" select="substring-before(@value, '$')"/>
       <xsl:variable name="typeStripped" select="substring-after(@value, $type)"/>
       <xsl:variable name="name">
