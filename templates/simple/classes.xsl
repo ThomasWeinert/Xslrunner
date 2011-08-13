@@ -110,6 +110,7 @@
   <xsl:variable name="target" select="concat('target://', cxr:filename-of-class($class/@full))"/>
   <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($class/@full, '\'))"/>
   <xsl:variable name="namespace" select="$class/parent::pdox:namespace/@name"/>
+  <xsl:variable name="docblock" select="$class/pdox:docblock"/>
   <exsl:document
     href="{$target}"
     method="xml"
@@ -176,8 +177,16 @@
             </ul>
           </xsl:if>
           <p>
-            <xsl:value-of select="$class/pdox:docblock/pdox:description/@compact"/>
+            <xsl:value-of select="$docblock/pdox:description/@compact"/>
           </p>
+          <xsl:call-template name="file-dynamic-properties">
+            <xsl:with-param
+              name="properties"
+              select="$docblock/pdox:property|$docblock/pdox:property-read|$docblock/pdox:invalid[@annotation = 'property-read']"/>
+            <xsl:with-param name="fileName" select="$fileName"/>
+            <xsl:with-param name="namespace" select="$namespace"/>
+            <xsl:with-param name="path" select="$path"/>
+          </xsl:call-template>
           <xsl:call-template name="file-properties">
             <xsl:with-param name="properties" select="$class/pdox:member"/>
             <xsl:with-param name="fileName" select="$fileName"/>

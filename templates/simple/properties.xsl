@@ -92,4 +92,49 @@
   </div>
 </xsl:template>
 
+<xsl:template name="file-dynamic-properties">
+  <xsl:param name="properties"/>
+  <xsl:param name="fileName"/>
+  <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
+  <xsl:if test="count($properties) &gt; 0">
+    <h3>Dynamic properties</h3>
+    <xsl:for-each select="$properties">
+      <xsl:variable name="type" select="substring-before(@value, '$')"/>
+      <xsl:variable name="typeStripped" select="substring-after(@value, $type)"/>
+      <xsl:variable name="name">
+        <xsl:choose>
+          <xsl:when test="contains($typeStripped, ' ')">
+            <xsl:value-of select="substring-before($typeStripped, ' ')"/> 
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$typeStripped"/> 
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="description" select="substring-after($typeStripped, ' ')"/>
+      <div class="property">
+        <h4><xsl:value-of select="$name"/></h4>
+        <div class="prototype property">
+          <ul class="properties">
+            <li class="keyword">property</li>
+            <xsl:if test="local-name() = 'property-read' or @annotation = 'property-read'"> 
+              <li class="keyword">read-only</li>
+            </xsl:if>
+          </ul>
+          <xsl:call-template name="variable">
+            <xsl:with-param name="name" select="$name"/>
+            <xsl:with-param name="type" select="normalize-space($type)"/>
+            <xsl:with-param name="path" select="$path"/>
+            <xsl:with-param name="namespace" select="$namespace"/>
+          </xsl:call-template>
+        </div>
+        <xsl:if test="$description != ''">
+          <p class="descriptionShort"><xsl:value-of select="$description"/></p>
+        </xsl:if>
+      </div>
+    </xsl:for-each>
+  </xsl:if>
+</xsl:template>
+
 </xsl:stylesheet>
