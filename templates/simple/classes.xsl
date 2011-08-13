@@ -11,6 +11,7 @@
 
 <xsl:import href="prototype.xsl"/>
 <xsl:import href="methods.xsl"/>
+<xsl:import href="properties.xsl"/>
 
 <xsl:param name="FORCE_USE_PACKAGES" select="false()"/>
 
@@ -177,8 +178,14 @@
           <p>
             <xsl:value-of select="$class/pdox:docblock/pdox:description/@compact"/>
           </p>
+          <xsl:call-template name="file-properties">
+            <xsl:with-param name="properties" select="$class/pdox:member"/>
+            <xsl:with-param name="fileName" select="$fileName"/>
+            <xsl:with-param name="namespace" select="$namespace"/>
+            <xsl:with-param name="path" select="$path"/>
+          </xsl:call-template>
           <xsl:call-template name="file-methods">
-            <xsl:with-param name="methods" select="$class/pdox:method"/>
+            <xsl:with-param name="methods" select="$class/pdox:method|$class/pdox:constructor"/>
             <xsl:with-param name="fileName" select="$fileName"/>
             <xsl:with-param name="namespace" select="$namespace"/>
             <xsl:with-param name="path" select="$path"/>

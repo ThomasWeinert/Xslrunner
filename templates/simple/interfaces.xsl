@@ -11,6 +11,7 @@
 
 <xsl:import href="prototype.xsl"/>
 <xsl:import href="methods.xsl"/>
+<xsl:import href="properties.xsl"/>
 
 <xsl:param name="FORCE_USE_PACKAGES" select="false()"/>
 
