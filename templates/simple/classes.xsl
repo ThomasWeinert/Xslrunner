@@ -34,7 +34,9 @@
         <xsl:with-param name="title">Class Index</xsl:with-param>
       </xsl:call-template>
       <body>
-        <xsl:call-template name="page-header"/>
+        <xsl:call-template name="page-header">
+          <xsl:with-param name="title">Class Index</xsl:with-param>
+        </xsl:call-template>
         <div class="navigation">
           <xsl:call-template name="navigation"/>
         </div>
@@ -127,7 +129,9 @@
         <xsl:with-param name="path" select="$path"/>
       </xsl:call-template>
       <body>
-        <xsl:call-template name="page-header"/>
+        <xsl:call-template name="page-header">
+          <xsl:with-param name="title" select="$class/@full"/>
+        </xsl:call-template>
         <div class="navigation">
           <xsl:call-template name="navigation">
             <xsl:with-param name="selected" select="$class/@full"/>

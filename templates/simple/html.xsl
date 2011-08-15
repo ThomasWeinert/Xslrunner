@@ -11,12 +11,26 @@
   <xsl:param name="title"></xsl:param>
   <xsl:param name="path"></xsl:param>
   <head>
-    <title><xsl:value-of select="$title"/></title>
+    <title>
+      <xsl:choose>
+        <xsl:when test="/project/title and protect/title != ''">
+          <xsl:copy-of select="/project/title/node()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          Documentation
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="$title != ''">
+        <xsl:text> - </xsl:text>
+        <xsl:value-of select="$title"/>
+      </xsl:if>
+    </title>
     <link rel="stylesheet" type="text/css" href="{$path}files/style.css"/>
   </head>
 </xsl:template>
 
 <xsl:template name="page-header">
+  <xsl:param name="title"></xsl:param>
   <div class="pageHeader">
     <h1 id="top">
       <xsl:choose>
@@ -27,6 +41,10 @@
           Documentation
         </xsl:otherwise>
       </xsl:choose>
+      <xsl:if test="$title != ''">
+        <xsl:text> - </xsl:text>
+        <xsl:value-of select="$title"/>
+      </xsl:if>
     </h1>
   </div>
 </xsl:template>
