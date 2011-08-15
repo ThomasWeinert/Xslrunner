@@ -42,7 +42,7 @@
   <xsl:if test="count($properties) &gt; 0">
     <xsl:for-each select="$properties">
       <xsl:sort select="@name"/>
-      <div class="property">
+      <div class="group property">
         <h4>$<xsl:value-of select="@name"/></h4>
         <xsl:call-template name="prototype-property">
           <xsl:with-param name="property" select="."/>
@@ -114,7 +114,7 @@
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="description" select="substring-after($typeStripped, ' ')"/>
-      <div class="property">
+      <div class="group property">
         <h4><xsl:value-of select="$name"/></h4>
         <div class="prototype property">
           <ul class="properties">

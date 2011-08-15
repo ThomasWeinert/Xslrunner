@@ -18,7 +18,7 @@
     <h3>Methods</h3>
     <xsl:for-each select="$methods">
       <xsl:sort select="@name"/>
-      <div class="method">
+      <div class="group method">
         <h4><xsl:value-of select="@name"/></h4>
         <xsl:call-template name="function-prototype">
           <xsl:with-param name="function" select="."/>
@@ -47,7 +47,7 @@
       <xsl:variable name="returnStripped" select="substring-after(@value, $returnType)"/>
       <xsl:variable name="name" select="normalize-space(substring-before($returnStripped, '('))"/>
       <xsl:variable name="description" select="substring-after($returnStripped, ')')"/>
-      <div class="method">
+      <div class="group method">
         <h4><xsl:value-of select="$name"/></h4>
         <div class="prototype function">
           <ul class="properties">
