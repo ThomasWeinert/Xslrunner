@@ -176,6 +176,16 @@
               <xsl:with-param name="namespace" select="$class/@namespace"/>
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
+            <xsl:if test="$docblock/pdox:description/@compact != ''">
+              <p>
+                <xsl:value-of select="$docblock/pdox:description/@compact"/>
+              </p>
+            </xsl:if>
+            <xsl:if test="$docblock/pdox:description/node()">
+               <p class="descriptionLarge">
+                 <xsl:copy-of select="$docblock/pdox:description/node()"/>
+               </p>
+            </xsl:if>
             <xsl:variable
               name="superClasses"
               select="cxr:inheritance-superclasses($index, string($class/@full))//pdox:class"/>
@@ -204,9 +214,6 @@
                 </xsl:for-each>
               </ul>
             </xsl:if>
-            <p>
-              <xsl:value-of select="$docblock/pdox:description/@compact"/>
-            </p>
             <xsl:call-template name="file-dynamic-properties">
               <xsl:with-param
                 name="properties"

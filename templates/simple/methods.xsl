@@ -29,6 +29,11 @@
         <xsl:if test="pdox:docblock/pdox:description/@compact != ''">
           <p class="descriptionShort"><xsl:value-of select="pdox:docblock/pdox:description/@compact"/></p>
         </xsl:if>
+        <xsl:if test="pdox:docblock/pdox:description/node()">
+          <p class="descriptionLarge">
+            <xsl:copy-of select="pdox:docblock/pdox:description/node()"/>
+          </p>
+        </xsl:if>
         <xsl:call-template name="link-jump-to-top"/>
       </div>
     </xsl:for-each>

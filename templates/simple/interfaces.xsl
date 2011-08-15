@@ -112,6 +112,7 @@
   <xsl:variable name="target" select="concat('target://', cxr:filename-of-interface($interface/@full))"/>
   <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($interface/@full, '\'))"/>
   <xsl:variable name="namespace" select="$interface/parent::pdox:namespace/@name"/>
+  <xsl:variable name="docblock" select="$interface/pdox:docblock"/>
   <exsl:document
     href="{$target}"
     method="xml"
@@ -163,6 +164,16 @@
               <xsl:with-param name="namespace" select="$interface/@namespace"/>
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
+            <xsl:if test="$docblock/pdox:description/@compact != ''">
+              <p>
+                <xsl:value-of select="$docblock/pdox:description/@compact"/>
+              </p>
+            </xsl:if>
+            <xsl:if test="$docblock/pdox:description/node()">
+               <p class="descriptionLarge">
+                 <xsl:copy-of select="$docblock/pdox:description/node()"/>
+               </p>
+            </xsl:if>
             <xsl:variable
               name="children"
               select="cxr:inheritance-children-interface($index, string($interface/@full))//pdox:interface"/>
@@ -195,9 +206,6 @@
                 </xsl:for-each>
               </ul>
             </xsl:if>
-            <p>
-              <xsl:value-of select="$interface/pdox:docblock/pdox:description/@compact"/>
-            </p>
             <xsl:call-template name="file-methods">
               <xsl:with-param name="methods" select="$interface/pdox:method"/>
               <xsl:with-param name="fileName" select="$fileName"/>
