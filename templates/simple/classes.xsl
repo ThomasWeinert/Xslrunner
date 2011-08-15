@@ -38,33 +38,35 @@
         <div class="navigation">
           <xsl:call-template name="navigation"/>
         </div>
-        <div class="content">
-          <xsl:choose>
-            <xsl:when test="$FORCE_USE_PACKAGES or count($classIndex/pdox:namespace) = 0">
-              <xsl:call-template name="class-list">
-                <xsl:with-param name="classes" select="$index//pdox:class[@package = '']"/>
-              </xsl:call-template>
-              <xsl:for-each select="$packages[@full != '']">
-                <xsl:variable name="packageName" select="@full"/>
+        <div class="pageBody">
+          <div class="content">
+            <xsl:choose>
+              <xsl:when test="$FORCE_USE_PACKAGES or count($classIndex/pdox:namespace) = 0">
                 <xsl:call-template name="class-list">
-                  <xsl:with-param name="classes" select="$index//pdox:class[@package = $packageName]"/>
-                  <xsl:with-param name="package" select="$packageName"/>
+                  <xsl:with-param name="classes" select="$index//pdox:class[@package = '']"/>
                 </xsl:call-template>
-              </xsl:for-each>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:call-template name="class-list">
-                <xsl:with-param name="classes" select="$classIndex/pdox:class"/>
-              </xsl:call-template>
-              <xsl:for-each select="$classIndex/pdox:namespace">
-                <xsl:sort select="@name"/>
+                <xsl:for-each select="$packages[@full != '']">
+                  <xsl:variable name="packageName" select="@full"/>
+                  <xsl:call-template name="class-list">
+                    <xsl:with-param name="classes" select="$index//pdox:class[@package = $packageName]"/>
+                    <xsl:with-param name="package" select="$packageName"/>
+                  </xsl:call-template>
+                </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
                 <xsl:call-template name="class-list">
-                  <xsl:with-param name="classes" select="pdox:class"/>
-                  <xsl:with-param name="namespace" select="@name"/>
+                  <xsl:with-param name="classes" select="$classIndex/pdox:class"/>
                 </xsl:call-template>
-              </xsl:for-each> 
-            </xsl:otherwise>
-          </xsl:choose>
+                <xsl:for-each select="$classIndex/pdox:namespace">
+                  <xsl:sort select="@name"/>
+                  <xsl:call-template name="class-list">
+                    <xsl:with-param name="classes" select="pdox:class"/>
+                    <xsl:with-param name="namespace" select="@name"/>
+                  </xsl:call-template>
+                </xsl:for-each>
+              </xsl:otherwise>
+            </xsl:choose>
+          </div>
         </div>
         <xsl:call-template name="page-footer"/>
       </body>
@@ -132,79 +134,106 @@
             <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
         </div>
-        <div class="content">
-          <h2 class="className">
-            <xsl:call-template name="namespace-ariadne">
+        <div class="pageBody">
+          <div class="pageNavigation">
+            <xsl:call-template name="file-dynamic-property-links">
+              <xsl:with-param
+                name="properties"
+                select="$docblock/pdox:property|$docblock/pdox:property-read|$docblock/pdox:invalid[@annotation = 'property-read']"/>
               <xsl:with-param name="namespace" select="$namespace"/>
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
-            <xsl:if test="string($namespace) != ''">
-              <xsl:text>\</xsl:text>
-            </xsl:if>
-            <xsl:value-of select="@name"/>
-          </h2>
-          <xsl:call-template name="class-prototype">
-            <xsl:with-param name="class" select="$class"/>
-            <xsl:with-param name="namespace" select="$class/@namespace"/>
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
-          <xsl:variable
-            name="superClasses"
-            select="cxr:inheritance-superclasses($index, string($class/@full))//pdox:class"/>
-          <xsl:if test="count($superClasses) &gt; 1">
-            <h3>Inheritance</h3>
-            <xsl:call-template name="file-class-inheritance">
-              <xsl:with-param
-                 name="parents"
-                 select="$superClasses"/>
+            <xsl:call-template name="file-dynamic-method-links">
+              <xsl:with-param name="methods" select="$docblock/pdox:method"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
-          </xsl:if>
-          <xsl:variable
-             name="children"
-            select="cxr:inheritance-children-class($index, string($class/@full))//pdox:class"/>
-          <xsl:if test="count($children) &gt; 0">
-            <h3>Extended by</h3>
-            <ul class="extendedBy">
-              <xsl:for-each select="$children">
-                <li>
-                  <xsl:call-template name="variable-type">
-                    <xsl:with-param name="type" select="string(@full)"/>
-                    <xsl:with-param name="path" select="string($path)"/>
-                  </xsl:call-template>
-                </li>
-              </xsl:for-each>
-            </ul>
-          </xsl:if>
-          <p>
-            <xsl:value-of select="$docblock/pdox:description/@compact"/>
-          </p>
-          <xsl:call-template name="file-dynamic-properties">
-            <xsl:with-param
-              name="properties"
-              select="$docblock/pdox:property|$docblock/pdox:property-read|$docblock/pdox:invalid[@annotation = 'property-read']"/>
-            <xsl:with-param name="fileName" select="$fileName"/>
-            <xsl:with-param name="namespace" select="$namespace"/>
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
-          <xsl:call-template name="file-dynamic-methods">
-            <xsl:with-param name="methods" select="$docblock/pdox:method"/>
-            <xsl:with-param name="fileName" select="$fileName"/>
-            <xsl:with-param name="namespace" select="$namespace"/>
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
-          <xsl:call-template name="file-properties">
-            <xsl:with-param name="properties" select="$class/pdox:member"/>
-            <xsl:with-param name="fileName" select="$fileName"/>
-            <xsl:with-param name="namespace" select="$namespace"/>
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
-          <xsl:call-template name="file-methods">
-            <xsl:with-param name="methods" select="$class/pdox:method|$class/pdox:constructor"/>
-            <xsl:with-param name="fileName" select="$fileName"/>
-            <xsl:with-param name="namespace" select="$namespace"/>
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
+            <xsl:call-template name="file-property-links">
+              <xsl:with-param name="properties" select="$class/pdox:member"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+            <xsl:call-template name="file-method-links">
+              <xsl:with-param name="methods" select="$class/pdox:method|$class/pdox:constructor"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+            <xsl:text> </xsl:text>
+          </div>
+          <div class="content">
+            <h2 class="className">
+              <xsl:call-template name="namespace-ariadne">
+                <xsl:with-param name="namespace" select="$namespace"/>
+                <xsl:with-param name="path" select="$path"/>
+              </xsl:call-template>
+              <xsl:if test="string($namespace) != ''">
+                <xsl:text>\</xsl:text>
+              </xsl:if>
+              <xsl:value-of select="@name"/>
+            </h2>
+            <xsl:call-template name="class-prototype">
+              <xsl:with-param name="class" select="$class"/>
+              <xsl:with-param name="namespace" select="$class/@namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+            <xsl:variable
+              name="superClasses"
+              select="cxr:inheritance-superclasses($index, string($class/@full))//pdox:class"/>
+            <xsl:if test="count($superClasses) &gt; 1">
+              <h3>Inheritance</h3>
+              <xsl:call-template name="file-class-inheritance">
+                <xsl:with-param
+                   name="parents"
+                   select="$superClasses"/>
+                <xsl:with-param name="path" select="$path"/>
+              </xsl:call-template>
+            </xsl:if>
+            <xsl:variable
+               name="children"
+              select="cxr:inheritance-children-class($index, string($class/@full))//pdox:class"/>
+            <xsl:if test="count($children) &gt; 0">
+              <h3>Extended by</h3>
+              <ul class="extendedBy">
+                <xsl:for-each select="$children">
+                  <li>
+                    <xsl:call-template name="variable-type">
+                      <xsl:with-param name="type" select="string(@full)"/>
+                      <xsl:with-param name="path" select="string($path)"/>
+                    </xsl:call-template>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </xsl:if>
+            <p>
+              <xsl:value-of select="$docblock/pdox:description/@compact"/>
+            </p>
+            <xsl:call-template name="file-dynamic-properties">
+              <xsl:with-param
+                name="properties"
+                select="$docblock/pdox:property|$docblock/pdox:property-read|$docblock/pdox:invalid[@annotation = 'property-read']"/>
+              <xsl:with-param name="fileName" select="$fileName"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+            <xsl:call-template name="file-dynamic-methods">
+              <xsl:with-param name="methods" select="$docblock/pdox:method"/>
+              <xsl:with-param name="fileName" select="$fileName"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+            <xsl:call-template name="file-properties">
+              <xsl:with-param name="properties" select="$class/pdox:member"/>
+              <xsl:with-param name="fileName" select="$fileName"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+            <xsl:call-template name="file-methods">
+              <xsl:with-param name="methods" select="$class/pdox:method|$class/pdox:constructor"/>
+              <xsl:with-param name="fileName" select="$fileName"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+          </div>
         </div>
         <xsl:call-template name="page-footer"/>
       </body>

@@ -38,33 +38,35 @@
         <div class="navigation">
           <xsl:call-template name="navigation"/>
         </div>
-        <div class="content">
-          <xsl:choose>
-            <xsl:when test="$FORCE_USE_PACKAGES or count($interfaceIndex/pdox:namespace) = 0">
-              <xsl:call-template name="interface-list">
-                <xsl:with-param name="interfaces" select="$index//pdox:interface[@package = '']"/>
-              </xsl:call-template>
-              <xsl:for-each select="$packages[@full != '']">
-                <xsl:variable name="packageName" select="@full"/>
+        <div class="pageBody">
+          <div class="content">
+            <xsl:choose>
+              <xsl:when test="$FORCE_USE_PACKAGES or count($interfaceIndex/pdox:namespace) = 0">
                 <xsl:call-template name="interface-list">
-                  <xsl:with-param name="interfaces" select="$index//pdox:interface[@package = $packageName]"/>
-                  <xsl:with-param name="package" select="$packageName"/>
+                  <xsl:with-param name="interfaces" select="$index//pdox:interface[@package = '']"/>
                 </xsl:call-template>
-              </xsl:for-each>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:call-template name="interface-list">
-                <xsl:with-param name="interfaces" select="$interfaceIndex/pdox:interface"/>
-              </xsl:call-template>
-              <xsl:for-each select="$interfaceIndex/pdox:namespace">
-                <xsl:sort select="@name"/>
+                <xsl:for-each select="$packages[@full != '']">
+                  <xsl:variable name="packageName" select="@full"/>
+                  <xsl:call-template name="interface-list">
+                    <xsl:with-param name="interfaces" select="$index//pdox:interface[@package = $packageName]"/>
+                    <xsl:with-param name="package" select="$packageName"/>
+                  </xsl:call-template>
+                </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
                 <xsl:call-template name="interface-list">
-                  <xsl:with-param name="interfaces" select="pdox:interface"/>
-                  <xsl:with-param name="namespace" select="@name"/>
+                  <xsl:with-param name="interfaces" select="$interfaceIndex/pdox:interface"/>
                 </xsl:call-template>
-              </xsl:for-each> 
-            </xsl:otherwise>
-          </xsl:choose>
+                <xsl:for-each select="$interfaceIndex/pdox:namespace">
+                  <xsl:sort select="@name"/>
+                  <xsl:call-template name="interface-list">
+                    <xsl:with-param name="interfaces" select="pdox:interface"/>
+                    <xsl:with-param name="namespace" select="@name"/>
+                  </xsl:call-template>
+                </xsl:for-each>
+              </xsl:otherwise>
+            </xsl:choose>
+          </div>
         </div>
         <xsl:call-template name="page-footer"/>
       </body>
@@ -131,63 +133,78 @@
             <xsl:with-param name="path" select="$path"/>
           </xsl:call-template>
         </div>
-        <div class="content">
-          <h2 class="interfaceName">
-            <xsl:call-template name="namespace-ariadne">
+        <div class="pageBody">
+          <div class="pageNavigation">
+            <xsl:call-template name="file-property-links">
+              <xsl:with-param name="properties" select="$interface/pdox:member"/>
               <xsl:with-param name="namespace" select="$namespace"/>
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
-            <xsl:if test="string($namespace) != ''">
-              <xsl:text>\</xsl:text>
+            <xsl:call-template name="file-method-links">
+              <xsl:with-param name="methods" select="$interface/pdox:method|$interface/pdox:constructor"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+            <xsl:text> </xsl:text>
+          </div>
+          <div class="content">
+            <h2 class="interfaceName">
+              <xsl:call-template name="namespace-ariadne">
+                <xsl:with-param name="namespace" select="$namespace"/>
+                <xsl:with-param name="path" select="$path"/>
+              </xsl:call-template>
+              <xsl:if test="string($namespace) != ''">
+                <xsl:text>\</xsl:text>
+              </xsl:if>
+              <xsl:value-of select="@name"/>
+            </h2>
+            <xsl:call-template name="interface-prototype">
+              <xsl:with-param name="interface" select="$interface"/>
+              <xsl:with-param name="namespace" select="$interface/@namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+            <xsl:variable
+              name="children"
+              select="cxr:inheritance-children-interface($index, string($interface/@full))//pdox:interface"/>
+            <xsl:if test="count($children) &gt; 0">
+              <h3>Extended by</h3>
+              <ul class="extendedBy">
+                <xsl:for-each select="$children">
+                  <li>
+                    <xsl:call-template name="variable-type">
+                      <xsl:with-param name="type" select="string(@full)"/>
+                      <xsl:with-param name="path" select="string($path)"/>
+                    </xsl:call-template>
+                  </li>
+                </xsl:for-each>
+              </ul>
             </xsl:if>
-            <xsl:value-of select="@name"/>
-          </h2>
-          <xsl:call-template name="interface-prototype">
-            <xsl:with-param name="interface" select="$interface"/>
-            <xsl:with-param name="namespace" select="$interface/@namespace"/>
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
-          <xsl:variable
-            name="children"
-            select="cxr:inheritance-children-interface($index, string($interface/@full))//pdox:interface"/>
-          <xsl:if test="count($children) &gt; 0">
-            <h3>Extended by</h3>
-            <ul class="extendedBy">
-              <xsl:for-each select="$children">
-                <li>
-                  <xsl:call-template name="variable-type">
-                    <xsl:with-param name="type" select="string(@full)"/>
-                    <xsl:with-param name="path" select="string($path)"/>
-                  </xsl:call-template>
-                </li>
-              </xsl:for-each>
-            </ul>
-          </xsl:if>
-          <xsl:variable
-            name="implementations"
-            select="cxr:inheritance-implementations($index, string($interface/@full))//pdox:interface"/>
-          <xsl:if test="count($implementations) &gt; 0">
-            <h3>Implemented by</h3>
-            <ul class="implementedBy">
-              <xsl:for-each select="$implementations">
-                <li>
-                  <xsl:call-template name="variable-type">
-                    <xsl:with-param name="type" select="string(@full)"/>
-                    <xsl:with-param name="path" select="string($path)"/>
-                  </xsl:call-template>
-                </li>
-              </xsl:for-each>
-            </ul>
-          </xsl:if>
-          <p>
-            <xsl:value-of select="$interface/pdox:docblock/pdox:description/@compact"/>
-          </p>
-          <xsl:call-template name="file-methods">
-            <xsl:with-param name="methods" select="$interface/pdox:method"/>
-            <xsl:with-param name="fileName" select="$fileName"/>
-            <xsl:with-param name="namespace" select="$namespace"/>
-            <xsl:with-param name="path" select="$path"/>
-          </xsl:call-template>
+            <xsl:variable
+              name="implementations"
+              select="cxr:inheritance-implementations($index, string($interface/@full))//pdox:interface"/>
+            <xsl:if test="count($implementations) &gt; 0">
+              <h3>Implemented by</h3>
+              <ul class="implementedBy">
+                <xsl:for-each select="$implementations">
+                  <li>
+                    <xsl:call-template name="variable-type">
+                      <xsl:with-param name="type" select="string(@full)"/>
+                      <xsl:with-param name="path" select="string($path)"/>
+                    </xsl:call-template>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </xsl:if>
+            <p>
+              <xsl:value-of select="$interface/pdox:docblock/pdox:description/@compact"/>
+            </p>
+            <xsl:call-template name="file-methods">
+              <xsl:with-param name="methods" select="$interface/pdox:method"/>
+              <xsl:with-param name="fileName" select="$fileName"/>
+              <xsl:with-param name="namespace" select="$namespace"/>
+              <xsl:with-param name="path" select="$path"/>
+            </xsl:call-template>
+          </div>
         </div>
         <xsl:call-template name="page-footer"/>
       </body>

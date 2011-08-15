@@ -16,34 +16,10 @@
   <xsl:param name="namespace"></xsl:param>
   <xsl:if test="count($properties) &gt; 0">
     <h3>Properties</h3>
-    <xsl:call-template name="file-properties-group">
-      <xsl:with-param name="properties" select="$properties[@visibility = 'private']"/>
-      <xsl:with-param name="path" select="$path"/>
-      <xsl:with-param name="namespace" select="$namespace"/>
-    </xsl:call-template>
-    <xsl:call-template name="file-properties-group">
-      <xsl:with-param name="properties" select="$properties[@visibility = 'protected']"/>
-      <xsl:with-param name="path" select="$path"/>
-      <xsl:with-param name="namespace" select="$namespace"/>
-    </xsl:call-template>
-    <xsl:call-template name="file-properties-group">
-      <xsl:with-param name="properties" select="$properties[@visibility = 'public']"/>
-      <xsl:with-param name="path" select="$path"/>
-      <xsl:with-param name="namespace" select="$namespace"/>
-    </xsl:call-template>
-  </xsl:if>
-</xsl:template>
-
-<xsl:template name="file-properties-group">
-  <xsl:param name="properties"/>
-  <xsl:param name="fileName"/>
-  <xsl:param name="path"></xsl:param>
-  <xsl:param name="namespace"></xsl:param>
-  <xsl:if test="count($properties) &gt; 0">
     <xsl:for-each select="$properties">
       <xsl:sort select="@name"/>
       <div class="group property">
-        <h4>$<xsl:value-of select="@name"/></h4>
+        <h4 id="property_{@name}">$<xsl:value-of select="@name"/></h4>
         <xsl:call-template name="prototype-property">
           <xsl:with-param name="property" select="."/>
           <xsl:with-param name="path" select="$path"/>
@@ -52,6 +28,7 @@
         <xsl:if test="pdox:docblock/pdox:description/@compact != ''">
           <p class="descriptionShort"><xsl:value-of select="pdox:docblock/pdox:description/@compact"/></p>
         </xsl:if>
+        <xsl:call-template name="link-jump-to-top"/>
       </div>
     </xsl:for-each>
   </xsl:if>
@@ -106,20 +83,20 @@
       <xsl:variable name="name">
         <xsl:choose>
           <xsl:when test="contains($typeStripped, ' ')">
-            <xsl:value-of select="substring-before($typeStripped, ' ')"/> 
+            <xsl:value-of select="substring-before($typeStripped, ' ')"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="$typeStripped"/> 
+            <xsl:value-of select="$typeStripped"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="description" select="substring-after($typeStripped, ' ')"/>
       <div class="group property">
-        <h4><xsl:value-of select="$name"/></h4>
+        <h4 id="dynamicProperty_{$name}"><xsl:value-of select="$name"/></h4>
         <div class="prototype property">
           <ul class="properties">
             <li class="keyword">property</li>
-            <xsl:if test="local-name() = 'property-read' or @annotation = 'property-read'"> 
+            <xsl:if test="local-name() = 'property-read' or @annotation = 'property-read'">
               <li class="keyword">read-only</li>
             </xsl:if>
           </ul>
@@ -133,8 +110,55 @@
         <xsl:if test="$description != ''">
           <p class="descriptionShort"><xsl:value-of select="$description"/></p>
         </xsl:if>
+        <xsl:call-template name="link-jump-to-top"/>
       </div>
     </xsl:for-each>
+  </xsl:if>
+</xsl:template>
+
+<xsl:template name="file-property-links">
+  <xsl:param name="properties"/>
+  <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
+  <xsl:if test="count($properties) &gt; 0">
+    <h3>Properties</h3>
+    <ul>
+      <xsl:for-each select="$properties">
+        <xsl:sort select="@name"/>
+        <li>
+          <a href="#property_{@name}">$<xsl:value-of select="@name"/></a>
+        </li>
+      </xsl:for-each>
+    </ul>
+  </xsl:if>
+</xsl:template>
+
+<xsl:template name="file-dynamic-property-links">
+  <xsl:param name="properties"/>
+  <xsl:param name="path"></xsl:param>
+  <xsl:param name="namespace"></xsl:param>
+  <xsl:if test="count($properties) &gt; 0">
+    <h3>Dynamic properties</h3>
+    <ul>
+    <xsl:for-each select="$properties">
+      <xsl:sort select="substring-after(@value, '$')"/>
+      <xsl:variable name="type" select="substring-before(@value, '$')"/>
+      <xsl:variable name="typeStripped" select="substring-after(@value, $type)"/>
+      <xsl:variable name="name">
+        <xsl:choose>
+          <xsl:when test="contains($typeStripped, ' ')">
+            <xsl:value-of select="substring-before($typeStripped, ' ')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$typeStripped"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <li>
+        <a href="#dynamicProperty_{$name}"><xsl:value-of select="$name"/></a>
+      </li>
+    </xsl:for-each>
+    </ul>
   </xsl:if>
 </xsl:template>
 

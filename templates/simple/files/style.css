@@ -19,6 +19,21 @@ div.pageHeader h1 {
   font-size: 1.6em;
 }
 
+div.pageBody {
+  display: table;
+}
+
+div.pageNavigation {
+  display: table-cell;
+  background-color: #FFF;
+  padding: 1em;
+  min-width: 20em;
+}
+div.content {
+  display: table-cell;
+  width: 100%;
+}
+
 div.pageFooter {
   margin-top: 2em;
   background: #4770A8 url(background-title.png) repeat-x left top;
@@ -48,6 +63,13 @@ div.navigation ul li a {
   text-decoration: none;
 }
 
+a.jumpToTop {
+  display: block;
+  text-align: right;
+  font-size: 0.8em;
+  text-decoration: none;
+}
+
 ul.tree {
   list-style-type: circle;
 }
@@ -63,7 +85,7 @@ h3 {
 .group {
   border-bottom: 1px dotted silver;
 }
-  
+
 
 
 /*

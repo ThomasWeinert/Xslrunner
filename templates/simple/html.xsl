@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <xsl:stylesheet
-  version="1.0" 
+  version="1.0"
   xmlns="http://www.w3.org/1999/xhtml/"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:pdox="http://xml.phpdox.de/src#"
   xmlns:cxr="http://thomas.weinert.info/carica/xr"
   exclude-result-prefixes="#default pdox cxr">
-  
+
 <xsl:template name="html-head">
   <xsl:param name="title"></xsl:param>
   <xsl:param name="path"></xsl:param>
@@ -14,11 +14,11 @@
     <title><xsl:value-of select="$title"/></title>
     <link rel="stylesheet" type="text/css" href="{$path}files/style.css"/>
   </head>
-</xsl:template>  
+</xsl:template>
 
 <xsl:template name="page-header">
   <div class="pageHeader">
-    <h1>
+    <h1 id="top">
       <xsl:choose>
         <xsl:when test="/project/title and protect/title != ''">
           <xsl:copy-of select="/project/title/node()"/>
@@ -36,5 +36,9 @@
     <xsl:text> </xsl:text>
   </div>
 </xsl:template>
-  
+
+<xsl:template name="link-jump-to-top">
+  <a href="#top" class="jumpToTop">Jump To Top</a>
+</xsl:template>
+
 </xsl:stylesheet>
