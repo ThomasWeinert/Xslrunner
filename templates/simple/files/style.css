@@ -94,6 +94,9 @@ h3 {
 .prototype {
   font-family: monospace;
   font-size: 1.2em;
+  background-color: #F0F0F0;
+  border: 1px solid #808080;
+  padding: 1em;
 }
 .prototype ul {
   margin: 0;
