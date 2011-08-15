@@ -111,6 +111,7 @@
       </xsl:call-template>
     </xsl:if>
     <span class="name">
+      <xsl:text> </xsl:text>
       <xsl:if test="@byreference = 'true'">
         <xsl:text>&amp;</xsl:text>
       </xsl:if>
@@ -131,7 +132,7 @@
   <xsl:param name="path"></xsl:param>
   <xsl:param name="namespace"></xsl:param>
   <ul class="parameters">
-    <li class="operator"><xsl:text>(</xsl:text></li>
+    <li class="operator"><xsl:text>( </xsl:text></li>
     <xsl:if test="$parameters and count($parameters) > 0">
       <xsl:for-each select="$parameters">
         <xsl:variable name="name">
@@ -163,7 +164,7 @@
         </xsl:choose>
       </xsl:for-each>
     </xsl:if>
-    <li class="operator"><xsl:text>)</xsl:text></li>
+    <li class="operator"><xsl:text> )</xsl:text></li>
   </ul>
 </xsl:template>
 

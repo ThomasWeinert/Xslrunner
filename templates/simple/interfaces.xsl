@@ -10,6 +10,7 @@
   exclude-result-prefixes="#default pdox cxr">
 
 <xsl:import href="prototype.xsl"/>
+<xsl:import href="constants.xsl"/>
 <xsl:import href="methods.xsl"/>
 <xsl:import href="properties.xsl"/>
 
@@ -210,6 +211,9 @@
                 </xsl:for-each>
               </ul>
             </xsl:if>
+            <xsl:call-template name="file-constants">
+              <xsl:with-param name="constants" select="$interface/pdox:constant"/>
+            </xsl:call-template>
             <xsl:call-template name="file-methods">
               <xsl:with-param name="methods" select="$interface/pdox:method"/>
               <xsl:with-param name="fileName" select="$fileName"/>
