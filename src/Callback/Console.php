@@ -19,15 +19,45 @@ use \Carica\Xsl\Runner as Runner;
 */
 class Console implements Runner\Callback  {
 
+  /**
+  * How many dots are already on the current line
+  * @var integer
+  */
   private static $_dotCounter = 0;
+
+  /**
+  * How many lines of dots are printed
+  * @var integer
+  */
 
   private static $_lineCounter = 0;
 
+  /**
+  * Maximum line length including dots and numeric progress.
+  * @var integer
+  */
   private static $_lineLength = '72';
 
+  /**
+  * pattern for numeric progress at the line end.
+  * @var string
+  */
   private static $_endPattern = " [%s]\n";
 
+  /**
+  * Dot maximum for current progress.
+  * @var integer
+  */
   private static $_maximum = 0;
+
+  /**
+  * Set line length for progress output
+  *
+  * @param integer $length
+  */
+  public function setLineLength($length) {
+    self::$_lineLength = $length;
+  }
 
   /**
   * Output given arguments

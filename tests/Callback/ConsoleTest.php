@@ -9,7 +9,23 @@ include_once(__DIR__.'/../TestCase.php');
 class ConsoleTest extends Runner\TestCase {
 
   /**
-  * @covers \Carica\Xsl\Runner\Callback\Console
+  * @covers \Carica\Xsl\Runner\Callback\Console\progress
+  * @covers \Carica\Xsl\Runner\Callback\Console\setLineLength
+  */
+  public function testProgressWithTwoDotsInTwoLines() {
+    $callback = new Console();
+    $callback->setLineLength(7);
+    ob_start();
+    $callback->progress(TRUE, 2);
+    $callback->progress(FALSE, 2);
+    $this->assertEquals(
+      "\n. [1/2]\n. [2/2]\n",
+      ob_get_clean()
+    );
+  }
+
+  /**
+  * @covers \Carica\Xsl\Runner\Callback\Console\writeLine
   */
   public function testWriteLineWithLinebreak() {
     $callback = new Console();
