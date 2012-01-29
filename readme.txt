@@ -6,13 +6,13 @@
 | Licence: MIT Licence                                                |
 -----------------------------------------------------------------------
 
-This is a php script wich allos to run an xslt template file.
-The xslt can fetch xml files and generate files using php
-streamwrappers. It is possible to call specific php functions from
+This is a PHP script wich allows to run an XSLT template file.
+The XSLT can fetch XML files and generate files using XML
+stream wrappers. It is possible to call specific PHP functions from
 the xslt.
 
-The main purpose of this script is to generate html pages from the
-phpDox xml output.
+The main purpose of this script is to generate HTML pages from the
+phpDox XML output.
 
 Usage:
 $ php runner.php [-x "./xml/"] [-o "./xhtml/"] \
