@@ -48,12 +48,12 @@
 <!--
   If a problem (missing documentation, inconsisty) is found, a message is stored using php.
 -->
-<func:function name="cxr:errors-store">
+<func:function name="cxr:error-store">
   <xsl:param name="severity"/>
   <xsl:param name="message"/>
   <xsl:param name="class"></xsl:param>
   <func:result
-    select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'ErrorsStore', $severity, $message, $class)"
+    select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'Errors::store', string($severity), string($message), string($class))"
   />
 </func:function>
 
@@ -62,7 +62,7 @@
 -->
 <func:function name="cxr:errors">
   <func:result
-    select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'ErrorsGet')"
+    select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'Errors::get')"
   />
 </func:function>
 
