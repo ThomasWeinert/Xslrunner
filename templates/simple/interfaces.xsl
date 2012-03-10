@@ -215,6 +215,7 @@
               <xsl:with-param name="constants" select="$interface/pdox:constant"/>
             </xsl:call-template>
             <xsl:call-template name="file-methods">
+              <xsl:with-param name="className" select="$interfaceName"/>
               <xsl:with-param name="methods" select="$interface/pdox:method"/>
               <xsl:with-param name="fileName" select="$fileName"/>
               <xsl:with-param name="namespace" select="$namespace"/>

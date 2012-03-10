@@ -10,6 +10,7 @@
   exclude-result-prefixes="#default pdox cxr">
 
 <xsl:template name="file-methods">
+  <xsl:param name="className"/>
   <xsl:param name="methods"/>
   <xsl:param name="fileName"/>
   <xsl:param name="path"></xsl:param>
@@ -18,6 +19,13 @@
     <h3>Methods</h3>
     <xsl:for-each select="$methods">
       <xsl:sort select="@name"/>
+      
+      <xsl:if test="count(./pdox:docblock) = 0">
+        <xsl:variable
+          name="errorNoDocblock"
+          select="cxr:error-store('error', concat('Docblock missing for method ', @name), $className)"/>
+      </xsl:if>
+      
       <div class="group method">
         <h4 id="method_{@name}"><xsl:value-of select="@name"/></h4>
         <xsl:call-template name="function-prototype">

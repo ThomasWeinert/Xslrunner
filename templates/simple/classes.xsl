@@ -116,6 +116,13 @@
   <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($class/@full, '\'))"/>
   <xsl:variable name="namespace" select="$class/parent::pdox:namespace/@name"/>
   <xsl:variable name="docblock" select="$class/pdox:docblock"/>
+  
+  <xsl:if test="count($class/pdox:docblock) = 0">
+    <xsl:variable
+      name="errorNoDocblock"
+      select="cxr:error-store('error', 'Docblock missing for class', $className)"/>
+  </xsl:if>
+  
   <exsl:document
     href="{$target}"
     method="xml"
@@ -243,6 +250,7 @@
               <xsl:with-param name="path" select="$path"/>
             </xsl:call-template>
             <xsl:call-template name="file-methods">
+              <xsl:with-param name="className" select="$className"/>
               <xsl:with-param name="methods" select="$class/pdox:method|$class/pdox:constructor"/>
               <xsl:with-param name="fileName" select="$fileName"/>
               <xsl:with-param name="namespace" select="$namespace"/>

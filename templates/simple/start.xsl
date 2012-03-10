@@ -23,6 +23,8 @@
 <xsl:import href="classes.xsl"/>
 <xsl:import href="interfaces.xsl"/>
 
+<xsl:import href="errors.xsl"/>
+
 <xsl:output
   method="xml"
   encoding="utf-8"
@@ -45,9 +47,6 @@
     <xsl:call-template name="dump-structure">
       <xsl:with-param name="index" select="$index"/>
     </xsl:call-template>
-    <xsl:call-template name="file-index">
-      <xsl:with-param name="index" select="$index"/>
-    </xsl:call-template>
     <xsl:call-template name="class-index">
       <xsl:with-param name="index" select="$index"/>
       <xsl:with-param name="classIndex" select="$CLASSES"/>
@@ -63,6 +62,10 @@
     <xsl:call-template name="interfaces">
       <xsl:with-param name="index" select="$index"/>
       <xsl:with-param name="interfaceIndex" select="$INTERFACES"/>
+    </xsl:call-template>
+    <xsl:call-template name="errors"/>
+    <xsl:call-template name="file-index">
+      <xsl:with-param name="index" select="$index"/>
     </xsl:call-template>
   </result>
 </xsl:template>
@@ -99,6 +102,11 @@
     </xsl:call-template>
   </xsl:for-each>
   <xsl:variable name="consoleOutputDone" select="cxr:console-write('&#10;')"/>
+</xsl:template>
+
+<xsl:template name="errors">
+  <xsl:variable name="consoleOutputStart" select="cxr:console-write('Generating error file')"/>
+  <xsl:call-template name="file-errors"/>
 </xsl:template>
 
 <xsl:template name="dump-structure">
