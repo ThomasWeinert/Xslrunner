@@ -21,9 +21,10 @@
       <xsl:sort select="@name"/>
       
       <xsl:if test="count(./pdox:docblock) = 0">
-        <xsl:variable
-          name="errorNoDocblock"
-          select="cxr:error-store('error', concat('Docblock missing for method ', @name), $className)"/>
+        <xsl:call-template name="error-no-docblock-for-method">
+          <xsl:with-param name="class" select="$className"/>
+          <xsl:with-param name="method" select="@name"/>
+        </xsl:call-template>
       </xsl:if>
       
       <div class="group method">

@@ -116,6 +116,12 @@
   <xsl:variable name="path" select="cxr:string-repeat('../', cxr:substring-count($interface/@full, '\'))"/>
   <xsl:variable name="namespace" select="$interface/parent::pdox:namespace/@name"/>
   <xsl:variable name="docblock" select="$interface/pdox:docblock"/>
+  
+  <xsl:if test="count($interface/pdox:docblock) = 0">
+    <xsl:call-template name="error-no-docblock-for-interface">
+      <xsl:with-param name="interface" select="$interfaceName"/>
+    </xsl:call-template>
+  </xsl:if>
   <exsl:document
     href="{$target}"
     method="xml"

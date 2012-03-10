@@ -51,9 +51,9 @@
 <func:function name="cxr:error-store">
   <xsl:param name="severity"/>
   <xsl:param name="message"/>
-  <xsl:param name="class"></xsl:param>
+  <xsl:param name="group"></xsl:param>
   <func:result
-    select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'Errors::store', string($severity), string($message), string($class))"
+    select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'Errors::store', string($severity), string($message), string($group))"
   />
 </func:function>
 

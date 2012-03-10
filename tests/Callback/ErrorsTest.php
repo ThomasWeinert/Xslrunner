@@ -22,7 +22,7 @@ class ErrorsTest extends Runner\TestCase {
     $dom = $errors->get();
     $this->assertEquals(
       '<errors xmlns="http://thomas.weinert.info/carica/xr">'.
-        '<error severity="error" class="ClassOne">Error Message</error>'.
+        '<error severity="error" group="ClassOne">Error Message</error>'.
       '</errors>',
       $dom->saveXml($dom->documentElement)
     );
@@ -39,8 +39,8 @@ class ErrorsTest extends Runner\TestCase {
     $dom = $errors->get();
     $this->assertEquals(
       '<errors xmlns="http://thomas.weinert.info/carica/xr">'.
-        '<error severity="error" class="ClassOne">Error Message</error>'.
-        '<error severity="warning" class="ClassTwo">Warning Message</error>'.
+        '<error severity="error" group="ClassOne">Error Message</error>'.
+        '<error severity="warning" group="ClassTwo">Warning Message</error>'.
       '</errors>',
       $dom->saveXml($dom->documentElement)
     );

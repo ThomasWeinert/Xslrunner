@@ -54,7 +54,7 @@
                         <xsl:otherwise>messageInformation</xsl:otherwise>
                       </xsl:choose>
                     </xsl:attribute>
-                    <h3><xsl:value-of select="@class"/></h3>
+                    <h3><xsl:value-of select="@group"/></h3>
                     <p><xsl:value-of select="."/></p>
                   </div>
                 </xsl:for-each>
@@ -71,6 +71,39 @@
       <xsl:variable name="consoleOutput" select="cxr:console-write('No errors.')"/>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<xsl:template name="error-no-docblock">
+  <xsl:param name="group"/>
+  <xsl:param name="message"/>
+  <xsl:variable
+    name="errorNoDocblock"
+    select="cxr:error-store('error', $message, $group)"/>
+</xsl:template>
+
+<xsl:template name="error-no-docblock-for-class">
+  <xsl:param name="class"/>
+  <xsl:call-template name="error-no-docblock">
+    <xsl:with-param name="class" select="$class"/>
+    <xsl:with-param name="message" select="concat('Missing docblock for class: ', $class)"/>
+  </xsl:call-template>
+</xsl:template>
+
+<xsl:template name="error-no-docblock-for-interface">
+  <xsl:param name="interface"/>
+  <xsl:call-template name="error-no-docblock">
+    <xsl:with-param name="group" select="$interface"/>
+    <xsl:with-param name="message" select="concat('Missing docblock for interface: ', $interface)"/>
+  </xsl:call-template>
+</xsl:template>
+
+<xsl:template name="error-no-docblock-for-method">
+  <xsl:param name="class"/>
+  <xsl:param name="method"/>
+  <xsl:call-template name="error-no-docblock">
+    <xsl:with-param name="group" select="$class"/>
+    <xsl:with-param name="message" select="concat('Missing docblock for method: ', $class, '::', $method, '()')"/>
+  </xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>

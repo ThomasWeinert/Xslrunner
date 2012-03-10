@@ -25,7 +25,7 @@ class Errors implements Runner\Callback {
 
   private static $_errors = NULL;
 
-  public function store($severity, $message, $class) {
+  public function store($severity, $message, $group) {
     $this->initialize();
     self::$_errors->documentElement->appendChild(
       $error = self::$_errors->createElementNS(
@@ -33,7 +33,9 @@ class Errors implements Runner\Callback {
       )
     );
     $error->setAttribute('severity', (string)$severity);
-    $error->setAttribute('class', (string)$class);
+    if (!empty($group)) {
+      $error->setAttribute('group', (string)$group);
+    }
     $error->appendChild(
       self::$_errors->createTextNode((string)$message)
     );

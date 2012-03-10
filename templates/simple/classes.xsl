@@ -118,9 +118,9 @@
   <xsl:variable name="docblock" select="$class/pdox:docblock"/>
   
   <xsl:if test="count($class/pdox:docblock) = 0">
-    <xsl:variable
-      name="errorNoDocblock"
-      select="cxr:error-store('error', 'Docblock missing for class', $className)"/>
+    <xsl:call-template name="error-no-docblock-for-class">
+      <xsl:with-param name="class" select="$className"/>
+    </xsl:call-template>
   </xsl:if>
   
   <exsl:document
