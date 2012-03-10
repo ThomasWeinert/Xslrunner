@@ -15,7 +15,7 @@
 <func:function name="cxr:console-write">
   <xsl:param name="string"/>
   <xsl:param name="linebreak" select="true()"/>
-  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'Console::writeLine', $string, $linebreak)"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'Console::writeLine', $string, $linebreak)"/>
 </func:function>
 
 <!--
@@ -24,7 +24,7 @@
 <func:function name="cxr:console-progress">
   <xsl:param name="reset"/>
   <xsl:param name="maximum"/>
-  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'Console::progress', $reset, $maximum)"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'Console::progress', $reset, $maximum)"/>
 </func:function>
 
 <!--
@@ -33,7 +33,7 @@
 -->
 <func:function name="cxr:load-document">
   <xsl:param name="url"/>
-  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'LoadDocument', $url)"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'LoadDocument', $url)"/>
 </func:function>
 
 <!--
@@ -42,7 +42,7 @@
 -->
 <func:function name="cxr:parse-type-string">
   <xsl:param name="string"/>
-  <func:result select="php:function('\Carica\Xsl\Runner\XsltCallback', 'TypeString', string($string))"/>
+  <func:result select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'TypeString', string($string))"/>
 </func:function>
 
 <!--
@@ -53,7 +53,7 @@
   <xsl:param name="message"/>
   <xsl:param name="class"></xsl:param>
   <func:result
-    select="php:function('\Carica\Xsl\Runner\XsltCallback', 'ErrorsStore', $severity, $message, $class)"
+    select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'ErrorsStore', $severity, $message, $class)"
   />
 </func:function>
 
@@ -62,7 +62,7 @@
 -->
 <func:function name="cxr:errors">
   <func:result
-    select="php:function('\Carica\Xsl\Runner\XsltCallback', 'ErrorsGet')"
+    select="php:function('\Carica\Xsl\Runner\Engine::xsltCallback', 'ErrorsGet')"
   />
 </func:function>
 

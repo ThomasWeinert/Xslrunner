@@ -55,26 +55,23 @@ class EngineTest extends TestCase {
 
   public function testXsltCallbackUsingInvoke() {
     $this->assertEquals(
-      'success',  XsltCallback('CallbackSample', 'success')
+      'success',  Engine::xsltCallback('CallbackSample', 'success')
     );
   }
 
   public function testXsltCallbackWithMethod() {
     $this->assertEquals(
-      '"success"',  XsltCallback('CallbackSample::other', 'success')
+      '"success"',  Engine::xsltCallback('CallbackSample::other', 'success')
     );
   }
 
   public function testXsltCallbackWithInvalidClassExpectingException() {
-    try {
-      XsltCallback('CallbackInvalidSample::other');
-      $this->fail('An expected exception has not been thrown.');
-    } catch (\UnexpectedValueException $e) {
-      $this->assertEquals(
-        'Invalid callback: "\Carica\Xsl\Runner\Callback\CallbackInvalidSample".',
-        $e->getMessage()
-      );
-    }
+    $this->setExpectedException(
+      'LogicException',
+      'Class "\Carica\Xsl\Runner\Callback\CallbackInvalidSample"'.
+      ' does not implement the callback interface.'
+    );
+    Engine::xsltCallback('CallbackInvalidSample::other');
   }
 
   /****************
