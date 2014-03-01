@@ -9,13 +9,14 @@
 * @package XslRunner
 */
 
-namespace Carica\Xsl\Runner;
+namespace Carica\Xsl\Runner {
 
-/**
-* Interface definition for xsl callback classes. The callbacks can be executed from xslt
-* using a generic registered php function.
-*
-* @package XslRunner
-*/
-interface Callback {
+  /**
+  * Interface definition for xsl callback classes. The callbacks can be executed from xslt
+  * using a generic registered php function.
+  *
+  * @package XslRunner
+  */
+  interface Callback {
+  }
 }

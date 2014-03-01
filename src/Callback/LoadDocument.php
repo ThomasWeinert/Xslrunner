@@ -8,26 +8,27 @@
 * @package XslRunner
 */
 
-namespace Carica\Xsl\Runner\Callback;
+namespace Carica\Xsl\Runner\Callback {
 
-use \Carica\Xsl\Runner as Runner;
-
-/**
-* Xslt Callback object. Create a new DOMDocument, load the given xml file and return the document.
-*
-* @package XslRunner
-*/
-class LoadDocument implements Runner\Callback  {
+  use \Carica\Xsl\Runner as Runner;
 
   /**
-  * Create a new DOMDocument, load the given xml file and return the document.
+  * Xslt Callback object. Create a new DOMDocument, load the given xml file and return the document.
   *
-  * @param string $fileName
-  * @return DOMDocument
+  * @package XslRunner
   */
-  public function __invoke($fileName) {
-    $dom = new \DOMDocument();
-    $dom->load($fileName);
-    return $dom;
+  class LoadDocument implements Runner\Callback  {
+
+    /**
+    * Create a new DOMDocument, load the given xml file and return the document.
+    *
+    * @param string $fileName
+    * @return \DOMDocument
+    */
+    public function __invoke($fileName) {
+      $dom = new \DOMDocument();
+      $dom->load($fileName);
+      return $dom;
+    }
   }
 }

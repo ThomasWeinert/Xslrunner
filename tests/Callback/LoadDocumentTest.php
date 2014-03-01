@@ -1,22 +1,24 @@
 <?php
 
-namespace Carica\Xsl\Runner\Callback;
+namespace Carica\Xsl\Runner\Callback {
 
-use \Carica\Xsl\Runner as Runner;
+  use \Carica\Xsl\Runner as Runner;
 
-include_once(__DIR__.'/../TestCase.php');
+  include_once(__DIR__.'/../bootstrap.php');
 
-class LoadDocumentTest extends Runner\TestCase {
+  class LoadDocumentTest extends \PHPUnit_Framework_TestCase {
 
-  /**
-  * @covers \Carica\Xsl\Runner\Callback\LoadDocument::execute
-  */
-  public function testExecute() {
-    $callback = new LoadDocument();
-    $doc = $callback(__DIR__.'/TestData/simple.xml');
-    $this->assertEquals(
-      '<success/>',
-      $doc->saveXml($doc->documentElement)
-    );
+    /**
+    * @covers \Carica\Xsl\Runner\Callback\LoadDocument
+    */
+    public function testExecute() {
+      $callback = new LoadDocument();
+      /** @var \DOMDocument $doc */
+      $doc = $callback(__DIR__.'/TestData/simple.xml');
+      $this->assertEquals(
+        '<success/>',
+        $doc->saveXml($doc->documentElement)
+      );
+    }
   }
 }

@@ -1,9 +1,6 @@
 <?php
 
-require('ezc/Base/base.php');
-spl_autoload_register(array('ezcBase','autoload'));
-
-require('src/Runner.php');
+require(__DIR__.'/vendor/autoload.php');
 
 try {
   $runner = new \Carica\Xsl\Runner\Runner();

@@ -1,0 +1,20 @@
+{
+  "name": "carica/xslrunner",
+  "description": "Run XSLT templates using PHP",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Weinert",
+      "email": "thomas@weinert.info"
+    }
+  ],
+  "autoload" : {
+    "psr-4" : {
+      "Carica\\Xsl\\Runner\\" : "src\\"
+    }
+  },
+  "require": {
+    "zetacomponents/console-tools": ">=1.6.0"
+  }
+}

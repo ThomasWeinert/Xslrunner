@@ -8,58 +8,61 @@
 * @package XslRunner
 */
 
-namespace Carica\Xsl\Runner\Callback;
+namespace Carica\Xsl\Runner\Callback {
 
-use \Carica\Xsl\Runner as Runner;
+  use \Carica\Xsl\Runner as Runner;
 
-/**
-* Xslt Callback object. Collect and return errors.
-*
-* This is used to collect documentation errors like missing docblocks.
-*
-* @package XslRunner
-*/
-class Errors implements Runner\Callback {
+  /**
+  * Xslt Callback object. Collect and return errors.
+  *
+  * This is used to collect documentation errors like missing docblocks.
+  *
+  * @package XslRunner
+  */
+  class Errors implements Runner\Callback {
 
-  const CXR_NAMESPACE = 'http://thomas.weinert.info/carica/xr';
+    const CXR_NAMESPACE = 'http://thomas.weinert.info/carica/xr';
 
-  private static $_errors = NULL;
+    /**
+     * @var \DOMDocument $_errors
+     */
+    private static $_errors = NULL;
 
-  public function store($severity, $message, $group) {
-    $this->initialize();
-    self::$_errors->documentElement->appendChild(
-      $error = self::$_errors->createElementNS(
-        self::CXR_NAMESPACE, 'error'
-      )
-    );
-    $error->setAttribute('severity', (string)$severity);
-    if (!empty($group)) {
-      $error->setAttribute('group', (string)$group);
-    }
-    $error->appendChild(
-      self::$_errors->createTextNode((string)$message)
-    );
-  }
-
-  public function get() {
-    $this->initialize();
-    return self::$_errors;
-  }
-
-  public function clear() {
-    self::$_errors = NULL;
-  }
-
-  private function initialize() {
-    if (is_null(self::$_errors)) {
-      self::$_errors = new \DOMDocument();
-      self::$_errors->appendChild(
-        self::$_errors->createElementNS(
-          self::CXR_NAMESPACE,
-          'errors'
+    public function store($severity, $message, $group) {
+      $this->initialize();
+      self::$_errors->documentElement->appendChild(
+        $error = self::$_errors->createElementNS(
+          self::CXR_NAMESPACE, 'error'
         )
       );
+      $error->setAttribute('severity', (string)$severity);
+      if (!empty($group)) {
+        $error->setAttribute('group', (string)$group);
+      }
+      $error->appendChild(
+        self::$_errors->createTextNode((string)$message)
+      );
+    }
+
+    public function get() {
+      $this->initialize();
+      return self::$_errors;
+    }
+
+    public function clear() {
+      self::$_errors = NULL;
+    }
+
+    private function initialize() {
+      if (is_null(self::$_errors)) {
+        self::$_errors = new \DOMDocument();
+        self::$_errors->appendChild(
+          self::$_errors->createElementNS(
+            self::CXR_NAMESPACE,
+            'errors'
+          )
+        );
+      }
     }
   }
-
 }
